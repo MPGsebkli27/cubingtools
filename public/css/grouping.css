@@ -1,0 +1,132 @@
+body {
+    color: black;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+h3,
+h4 {
+    margin: 10px 0;
+}
+
+/* Labels and inputs */
+label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 30px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.inline {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+/* Buttons */
+button {
+    background-color: #007acc;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #005a99;
+}
+
+/* Event section titles */
+.event-section-title {
+    font-size: .8em;
+    font-weight: bold;
+    margin-top: 20px;
+    color: #838383;
+    padding-bottom: 5px;
+}
+
+/* Competitor List Table Styling */
+#competitor-list-wrapper {
+    max-height: 300px;
+    /* Set the max height of the table */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+#competitor-list {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    /* Ensure columns are fixed-width */
+}
+
+#competitor-list th,
+#competitor-list td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Specific column widths */
+#competitor-list th:nth-child(1),
+#competitor-list td:nth-child(1) {
+    width: 50px;
+    /* Set ID column width */
+}
+
+#competitor-list th {
+    background-color: #f4f4f4;
+    position: sticky;
+    top: 0;
+    /* Make the header sticky */
+    z-index: 1;
+}
+
+#competitor-list tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+#competitor-list .delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#competitor-list .delete-btn:hover {
+    background-color: #c0392b;
+}

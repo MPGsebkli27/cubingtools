@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2-Man Guildford Optimizer</title>
+    <meta name="description" content="Optimizes a 2-Man Mini Guildford based on your global times!">
+    <link rel="stylesheet" href="../../css/globals.css">
+    <link rel="stylesheet" href="../../css/guildford.css">
+</head>
+
+<body>
+    <header class="header">
+        <a href="/" class="logo">CubingTools</a>
+        <nav class="navbar">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="https://github.com/MPGsebkli27/cubingtools">Github</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Mini Guildford Optimizer</h1>
+        <form id="timeForm">
+            <div class="competitor">
+                <h3>Competitor 1</h3>
+                <label>2x2: <input type="number" class="time-input" id="c1-2x2" required></label>
+                <label>3x3: <input type="number" class="time-input" id="c1-3x3" required></label>
+                <label>4x4: <input type="number" class="time-input" id="c1-4x4" required></label>
+                <label>5x5: <input type="number" class="time-input" id="c1-5x5" required></label>
+                <label>OH: <input type="number" class="time-input" id="c1-OH" required></label>
+                <label>Pyraminx: <input type="number" class="time-input" id="c1-Pyraminx" required></label>
+                <label>Clock: <input type="number" class="time-input" id="c1-Clock" required></label>
+                <label>Skewb: <input type="number" class="time-input" id="c1-Skewb" required></label>
+                <label>Megaminx: <input type="number" class="time-input" id="c1-Megaminx" required></label>
+                <label>Square-1: <input type="number" class="time-input" id="c1-Square-1" required></label>
+            </div>
+            <div class="competitor">
+                <h3>Competitor 2</h3>
+                <label>2x2: <input type="number" class="time-input" id="c2-2x2" required></label>
+                <label>3x3: <input type="number" class="time-input" id="c2-3x3" required></label>
+                <label>4x4: <input type="number" class="time-input" id="c2-4x4" required></label>
+                <label>5x5: <input type="number" class="time-input" id="c2-5x5" required></label>
+                <label>OH: <input type="number" class="time-input" id="c2-OH" required></label>
+                <label>Pyraminx: <input type="number" class="time-input" id="c2-Pyraminx" required></label>
+                <label>Clock: <input type="number" class="time-input" id="c2-Clock" required></label>
+                <label>Skewb: <input type="number" class="time-input" id="c2-Skewb" required></label>
+                <label>Megaminx: <input type="number" class="time-input" id="c2-Megaminx" required></label>
+                <label>Square-1: <input type="number" class="time-input" id="c2-Square-1" required></label>
+            </div>
+            <button type="submit">Optimize</button>
+        </form>
+        <div class="result" id="result">
+            <h2>Results</h2>
+            <div id="bestCombination"></div>
+            <div id="allCombinations"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Made by <a href="/impressum" class="impressum">Sebastian Kling</a>
+    </div>
+
+    <script src="../../js/guildford.js"></script>
+</body>
+
+</html>

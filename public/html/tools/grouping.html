@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unofficial Groupifier</title>
+    <meta name="description" content="Tool to help with organising unofficial Competition!">
+
+    <link rel="stylesheet" href="../../css/globals.css">
+    <link rel="stylesheet" href="../../css/grouping.css">
+</head>
+
+<body>
+    <header class="header">
+        <a href="/" class="logo">CubingTools</a>
+        <nav class="navbar">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="https://github.com/MPGsebkli27/cubingtools">Github</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div id="competition-setup">
+            <h1>Setup Competition</h1>
+            <label for="competition-name">Competition Name:</label>
+            <input type="text" id="competition-name" placeholder="Super Cool Unofficial Competition">
+            <label for="max-competitors">Max Competitors per Group:</label>
+            <input type="number" id="max-competitors" placeholder="10">
+            <br>
+            <div class="inline">
+                <input type="checkbox" id="do-runners">
+                <label for="do-runners">Runners</label>
+            </div>
+            <div class="inline">
+                <input type="checkbox" class="inline-checkbox" id="do-judges">
+                <label for="do-judges">Judges</label>
+            </div>
+            <br>
+            <button onclick="setupCompetition()">Next</button>
+        </div>
+
+        <div id="event-selection" style="display: none;">
+            <h1>Select Events</h1>
+            <div class="inline">
+                <button onclick="deselectAllEventCheckboxes()">Deselect All</button>
+                <button onclick="selectAllEventCheckboxes()">Select All</button>
+                <button onclick="addCustomEvent()">Add Event</button>
+            </div>
+            <div id="event-checkboxes"></div>
+            <div class="inline">
+                <button onclick="goToSetupCompetition()">Previous</button>
+                <button onclick="selectEvents()">Next</button>
+            </div>
+        </div>
+
+        <div id="competitor-setup" style="display: none;">
+            <h1>Add Competitors</h1>
+            <div class="inline">
+                <button onclick="deselectAllEventCheckboxes()">Deselect All</button>
+                <button onclick="selectAllEventCheckboxes()">Select All</button>
+                <button onclick="addCompetitor()">Add Competitor</button>
+            </div>
+            <br>
+            <div id="competitor-form"></div>
+
+            <!-- Competitor List Table -->
+            <div id="competitor-list-wrapper">
+                <table id="competitor-list">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Events</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Competitors will be dynamically added here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="inline">
+                <button onclick="goToEventSelection()">Previous</button>
+                <button onclick="finalizeCompetitors()">Finalize Competitors</button>
+            </div>
+        </div>
+
+
+        <div id="grouping-results" style="display: none;">
+            <h1>Grouping Results</h1>
+            <div id="grouping-output"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        Made by <a href="/impressum" class="impressum">Sebastian Kling</a>
+    </div>
+
+    <script src="../../js/grouping.js"></script>
+</body>
+
+</html>
