@@ -43,12 +43,6 @@ input[type="checkbox"] {
     margin-right: 10px;
 }
 
-.inline {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-}
-
 /* Buttons */
 button {
     background-color: #007acc;
@@ -64,6 +58,11 @@ button {
 
 button:hover {
     background-color: #005a99;
+}
+
+/* Competitor CSS */
+ul li {
+    margin-left: 25px;
 }
 
 /* Event section titles */

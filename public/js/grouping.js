@@ -333,10 +333,9 @@ function generateGroups() {
 
     selectedEvents.forEach(eventId => {
         const eventCompetitors = competitors.filter(c => c.events.includes(eventId));
-        shuffleArray(eventCompetitors);
 
         // Determine the number of groups
-        const numGroups = Math.ceil(eventCompetitors.length / Math.ceil(maxCompetitors / 2));
+        const numGroups = Math.ceil(eventCompetitors.length / maxCompetitors);
         const eventGroups = [];
 
         // Initialize empty groups
@@ -360,20 +359,26 @@ function generateGroups() {
 
         // Assign runners, judges, and scramblers ensuring no overlap
         eventGroups.forEach((group, groupIndex) => {
+            // Number of Scramblers and Runners per group
+            const numOfHelpers = Math.ceil(Math.pow(group.competitors.length / 6, 1 / 1.32));
+
+            // Shuffle Array to have different assignments per group
+            shuffleArray(eventCompetitors);
+
             // Assign scramblers: competitors not in this group but in the event
             const availableScramblers = eventCompetitors.filter(c =>
                 c.groupAssignments[eventId] !== (groupIndex + 1)
             );
 
+            // Get the first numOfHelpers scramblers to scramble a group
             if (availableScramblers.length > 0) {
-                group.scramblers = [availableScramblers[0]]; // Only 1 scrambler per group
+                group.scramblers = availableScramblers.slice(0, numOfHelpers);
             }
 
             // Assign judges if applicable
             if (includeJudges) {
                 const availableJudges = eventCompetitors.filter(c =>
-                    c.groupAssignments[eventId] !== (groupIndex + 1) &&
-                    !group.judges.includes(c) && !group.scramblers.includes(c)
+                    !group.competitors.includes(c) && !group.judges.includes(c) && !group.runners.includes(c) && !group.scramblers.includes(c) // Not already competing, juding, running or scrambling that group
                 );
 
                 group.judges = availableJudges.slice(0, group.competitors.length);
@@ -382,12 +387,12 @@ function generateGroups() {
             // Assign runners if applicable
             if (includeRunners) {
                 const availableRunners = eventCompetitors.filter(c =>
-                    c.groupAssignments[eventId] !== (groupIndex + 1) &&
-                    !group.judges.includes(c) && !group.scramblers.includes(c)
+                    !group.competitors.includes(c) && !group.judges.includes(c) && !group.runners.includes(c) && !group.scramblers.includes(c) // Not already competing, juding, running or scrambling that group
                 );
 
+                // Get the first numOfHelpers scramblers to scramble a group
                 if (availableRunners.length > 0) {
-                    group.runners = availableRunners.slice(0, 1); // Only 1 runner per group
+                    group.scramblers = availableRunners.slice(0, numOfHelpers);
                 }
             }
         });
@@ -412,27 +417,39 @@ function generateGroups() {
 
             groupDiv.appendChild(groupTitle);
 
+            const competitorDiv = document.createElement('ul');
             group.competitors.forEach(competitor => {
-                const competitorDiv = document.createElement('div');
-                competitorDiv.textContent = `${competitor.id} ${competitor.name}`;
+                const competitorName = document.createElement('li');
+                competitorName.textContent = `${competitor.name}`;
 
-                groupDiv.appendChild(competitorDiv);
+                competitorDiv.appendChild(competitorName);
             });
+            groupDiv.appendChild(competitorDiv);
 
-            if (includeJudges) {
+            if (includeJudges && group.judges.length !== 0) {
                 const judgesDiv = document.createElement('div');
                 judgesDiv.textContent = `Judges: ${group.judges.map(j => j.name).join(', ')}`;
                 groupDiv.appendChild(judgesDiv);
             }
 
             if (includeRunners) {
-                const runnersDiv = document.createElement('div');
-                runnersDiv.textContent = `Runners: ${group.runners.map(r => r.name).join(', ')}`;
-                groupDiv.appendChild(runnersDiv);
+                if (!group.runners.length !== 0) {
+
+                    const runnersDiv = document.createElement('div');
+                    runnersDiv.textContent = `Runner: ${group.runners.map(r => r.name).join(', ')}`;
+                    groupDiv.appendChild(runnersDiv);
+
+                } else if (group.runners.length == 0) {
+
+                    const runnersDiv = document.createElement('div');
+                    runnersDiv.textContent = `Running Judges`;
+                    groupDiv.appendChild(runnersDiv);
+
+                }
             }
 
             const scramblersDiv = document.createElement('div');
-            scramblersDiv.textContent = `Scramblers: ${group.scramblers.map(s => s.name).join(', ')}`;
+            scramblersDiv.textContent = `Scrambler(s): ${group.scramblers.map(s => s.name).join(', ')}`;
 
             groupDiv.appendChild(scramblersDiv);
 

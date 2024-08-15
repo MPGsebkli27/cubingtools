@@ -4,6 +4,18 @@ const path = require('path');
 const app = express();
 const port = 800;
 
+let visitorCount = 0;
+
+app.use((req, res, next) => {
+
+    if (req.path === '/') {
+        visitorCount++;
+        console.log(`CubingTools has been opened ${visitorCount} times`);
+    }
+
+    next();
+})
+
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, '../public')));
 
@@ -46,7 +58,7 @@ app.get('/api/tools', (req, res) => {
 // Serve the main page
 app.get('/', (req, res) => {
     return res.sendFile(path.join(__dirname, '..', 'public/html', 'index.html'));
-});
+})
 
 // Serve the about page
 app.get('/about', (req, res) => {

@@ -17,7 +17,7 @@
         <nav class="navbar">
             <a href="/">Home</a>
             <a href="/about">About</a>
-            <a href="https://github.com/MPGsebkli27/cubingtools">Github</a>
+            <a target="_blank" href="https://github.com/MPGsebkli27/cubingtools">Github</a>
         </nav>
     </header>
 
@@ -43,28 +43,28 @@
 
         <div id="event-selection" style="display: none;">
             <h1>Select Events</h1>
-            <div class="inline">
-                <button onclick="deselectAllEventCheckboxes()">Deselect All</button>
-                <button onclick="selectAllEventCheckboxes()">Select All</button>
-                <button onclick="addCustomEvent()">Add Event</button>
+            <p>Check all of the event you plan to host at your unofficial competition. If an event you want to host is
+                not here, add it with the "Add Event" button!</p>
+            <div class="inline-btn">
+                <button title="Previous Page" onclick="goToSetupCompetition()">←</button>
+                <button title="Deselect All Checkboxes" onclick="deselectAllEventCheckboxes()">Deselect All</button>
+                <button title="Add a Custom Event" onclick="addCustomEvent()">Add Event</button>
+                <button title="Select All Checkboxes" onclick="selectAllEventCheckboxes()">Select All</button>
+                <button title="Next Page" onclick="selectEvents()">→</button>
             </div>
             <div id="event-checkboxes"></div>
-            <div class="inline">
-                <button onclick="goToSetupCompetition()">Previous</button>
-                <button onclick="selectEvents()">Next</button>
-            </div>
         </div>
 
         <div id="competitor-setup" style="display: none;">
             <h1>Add Competitors</h1>
-            <div class="inline">
+            <div class="inline-btn">
+                <button onclick="goToEventSelection()">Previous Page</button>
                 <button onclick="deselectAllEventCheckboxes()">Deselect All</button>
                 <button onclick="selectAllEventCheckboxes()">Select All</button>
-                <button onclick="addCompetitor()">Add Competitor</button>
             </div>
             <br>
             <div id="competitor-form"></div>
-
+            <button onclick="addCompetitor()">Add Competitor</button>
             <!-- Competitor List Table -->
             <div id="competitor-list-wrapper">
                 <table id="competitor-list">
@@ -81,11 +81,7 @@
                     </tbody>
                 </table>
             </div>
-
-            <div class="inline">
-                <button onclick="goToEventSelection()">Previous</button>
-                <button onclick="finalizeCompetitors()">Finalize Competitors</button>
-            </div>
+            <button onclick="finalizeCompetitors()">Finalize Competitors</button>
         </div>
 
 
@@ -93,10 +89,6 @@
             <h1>Grouping Results</h1>
             <div id="grouping-output"></div>
         </div>
-    </div>
-
-    <div class="footer">
-        Made by <a href="/impressum" class="impressum">Sebastian Kling</a>
     </div>
 
     <script src="../../js/grouping.js"></script>
