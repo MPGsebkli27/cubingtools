@@ -37,7 +37,6 @@
                 <input type="checkbox" class="inline-checkbox" id="do-judges">
                 <label for="do-judges">Judges</label>
             </div>
-            <br>
             <button onclick="setupCompetition()">Next</button>
         </div>
 
@@ -58,13 +57,14 @@
         <div id="competitor-setup" style="display: none;">
             <h1>Add Competitors</h1>
             <div class="inline-btn">
-                <button onclick="goToEventSelection()">Previous Page</button>
-                <button onclick="deselectAllEventCheckboxes()">Deselect All</button>
-                <button onclick="selectAllEventCheckboxes()">Select All</button>
+                <button title="Previous Page" onclick="goToEventSelection()">←</button>
+                <button title="Deselect All Checkboxes" onclick="deselectAllEventCheckboxes()">Deselect All</button>
+                <button title="Select All Checkboxes" onclick="selectAllEventCheckboxes()">Select All</button>
+                <button title="Finalize Competitors" onclick="finalizeCompetitors()()">→</button>
             </div>
             <br>
             <div id="competitor-form"></div>
-            <button onclick="addCompetitor()">Add Competitor</button>
+            <button title="Add Competitor" onclick="addCompetitor()">Add Competitor</button>
             <!-- Competitor List Table -->
             <div id="competitor-list-wrapper">
                 <table id="competitor-list">
@@ -81,7 +81,6 @@
                     </tbody>
                 </table>
             </div>
-            <button onclick="finalizeCompetitors()">Finalize Competitors</button>
         </div>
 
 

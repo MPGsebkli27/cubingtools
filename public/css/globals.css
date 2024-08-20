@@ -20,16 +20,26 @@ body {
     position: relative;
 }
 
+.container {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #282a2e;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    color: white;
+}
+
 .header {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     padding: 20px 100px;
-    background-color: transparent;
     display: flex;
     justify-content: space-between;
-    z-index: 100;
+
 }
 
 .logo {
@@ -79,6 +89,10 @@ body {
     align-items: center;
     justify-content: space-evenly;
     margin: 10px 0;
+}
+
+.bold {
+    font-weight: bold;
 }
 
 @media screen and (max-width: 750px) {

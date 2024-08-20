@@ -1,20 +1,36 @@
 const express = require('express');
+const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const app = express();
-const port = 800;
+const port = 80;
 
 let visitorCount = 0;
 
-app.use((req, res, next) => {
+// Make sure you specify the path to the log file
+const logFilePath = path.join(__dirname, 'log.txt');
 
-    if (req.path === '/') {
-        visitorCount++;
-        console.log(`CubingTools has been opened ${visitorCount} times`);
-    }
+app.use((req, res, next) => {
+    visitorCount++;
+    const logMessage = `Request to cubingtools.de${req.path}`;
+    console.log(logMessage);
+
+    // Get current date and time
+    const now = new Date();
+    const timestamp = now.toISOString();
+
+    // Create log entry
+    const logEntry = `${timestamp} - ${logMessage}\n`;
+
+    // Append log entry to the log file
+    fs.appendFile(logFilePath, logEntry, (err) => {
+        if (err) {
+            console.error('Error writing to log file', err);
+        }
+    });
 
     next();
-})
+});
 
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, '../public')));
@@ -55,8 +71,56 @@ app.get('/api/tools', (req, res) => {
     });
 });
 
+// API endpoint to get WCA data
+app.get('/api/wca/:wcaId/:event', async (req, res) => {
+    const { wcaId, event } = req.params;
+    const apiUrl = `https://raw.githubusercontent.com/robiningelbrecht/wca-rest-api/master/api/persons/${wcaId}.json`;
+
+    try {
+        // Fetch the person's data
+        const response = await axios.get(apiUrl);
+        const data = response.data;
+
+        // Extract results for the specified event
+        let allResults = [];
+        for (const competition of Object.values(data.results)) {
+            if (competition[event]) {
+                allResults = allResults.concat(competition[event]);
+            }
+        }
+
+        // Extract times and filter out DNFs
+        let solves = allResults
+            .flatMap(result => result.solves) // Flatten the solves array
+            .slice(0, 12) // Get the first 12 solves for the average
+            .filter(result => result > 0); // Remove any DNFs, DNS', or missed cutoffs
+
+        // Handle insufficient results
+        if (solves.length === 0) {
+            return res.json({ average: null });
+        }
+
+        solves
+            .sort((a, b) => a - b) // Sort in ascending order
+            .slice(1, -1); // Remove best and worst results
+        const sum = solves.reduce((a, b) => a + b, 0);
+        const avg = (sum / solves.length) / 100;
+
+        res.json({ average: avg });
+
+    } catch (error) {
+        console.error(`Error fetching average for event ${event}: ${error.message}`);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Serve the main page
 app.get('/', (req, res) => {
+    return res.sendFile(path.join(__dirname, '..', 'public/html', 'index.html'));
+})
+
+// Serve the main page
+app.get('/tools', (req, res) => {
     return res.sendFile(path.join(__dirname, '..', 'public/html', 'index.html'));
 })
 

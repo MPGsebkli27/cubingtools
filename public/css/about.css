@@ -1,4 +1,7 @@
 .container {
-    max-width: 1200px;
-    margin: 30px;
+    padding: 30px 40px;
+}
+
+.container h1 {
+    text-align: center;
 }

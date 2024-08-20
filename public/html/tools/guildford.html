@@ -22,32 +22,51 @@
 
     <div class="container">
         <h1>Mini Guildford Optimizer</h1>
+        <p>
+            This is the 2-Man Mini Guildford Optimizer. To start, input your global times for each event <span
+                class="bold">in seconds</span> for your partner and yourself.
+            <br><br>
+            If you aren't sure what your globals are, you can also input your WCA ID. This will return your latest Ao12
+            for each event!
+            <br><br>
+            If you cannot solve a puzzle, or simply do not want to, you can input DNF as your time.
+            <br><br>
+        </p>
+        <label>Pick Up Time: <input type="number" class="time-input pickup" id="pickup" value="1.5"></label>
         <form id="timeForm">
             <div class="competitor">
                 <h3>Competitor 1</h3>
-                <label>2x2: <input type="number" class="time-input" id="c1-2x2" required></label>
-                <label>3x3: <input type="number" class="time-input" id="c1-3x3" required></label>
-                <label>4x4: <input type="number" class="time-input" id="c1-4x4" required></label>
-                <label>5x5: <input type="number" class="time-input" id="c1-5x5" required></label>
-                <label>OH: <input type="number" class="time-input" id="c1-OH" required></label>
-                <label>Pyraminx: <input type="number" class="time-input" id="c1-Pyraminx" required></label>
-                <label>Clock: <input type="number" class="time-input" id="c1-Clock" required></label>
-                <label>Skewb: <input type="number" class="time-input" id="c1-Skewb" required></label>
-                <label>Megaminx: <input type="number" class="time-input" id="c1-Megaminx" required></label>
-                <label>Square-1: <input type="number" class="time-input" id="c1-Square-1" required></label>
+                <label>WCA ID: <input type="text" class="time-input" id="c1-wca"></label>
+                <button type="button" onclick="fetchWCAData('c1')">Add Globals</button>
+                <div id="c1-times">
+                    <label>2x2: <input type="text" class="time-input" id="c1-2x2" required></label>
+                    <label>3x3: <input type="text" class="time-input" id="c1-3x3" required></label>
+                    <label>4x4: <input type="text" class="time-input" id="c1-4x4" required></label>
+                    <label>5x5: <input type="text" class="time-input" id="c1-5x5" required></label>
+                    <label>OH: <input type="text" class="time-input" id="c1-OH" required></label>
+                    <label>Pyraminx: <input type="text" class="time-input" id="c1-Pyraminx" required></label>
+                    <label>Clock: <input type="text" class="time-input" id="c1-Clock" required></label>
+                    <label>Skewb: <input type="text" class="time-input" id="c1-Skewb" required></label>
+                    <label>Megaminx: <input type="text" class="time-input" id="c1-Megaminx" required></label>
+                    <label>Square-1: <input type="text" class="time-input" id="c1-Square-1" required></label>
+                </div>
             </div>
             <div class="competitor">
                 <h3>Competitor 2</h3>
-                <label>2x2: <input type="number" class="time-input" id="c2-2x2" required></label>
-                <label>3x3: <input type="number" class="time-input" id="c2-3x3" required></label>
-                <label>4x4: <input type="number" class="time-input" id="c2-4x4" required></label>
-                <label>5x5: <input type="number" class="time-input" id="c2-5x5" required></label>
-                <label>OH: <input type="number" class="time-input" id="c2-OH" required></label>
-                <label>Pyraminx: <input type="number" class="time-input" id="c2-Pyraminx" required></label>
-                <label>Clock: <input type="number" class="time-input" id="c2-Clock" required></label>
-                <label>Skewb: <input type="number" class="time-input" id="c2-Skewb" required></label>
-                <label>Megaminx: <input type="number" class="time-input" id="c2-Megaminx" required></label>
-                <label>Square-1: <input type="number" class="time-input" id="c2-Square-1" required></label>
+                <label>WCA ID: <input type="text" class="time-input" id="c2-wca"></label>
+                <button type="button" onclick="fetchWCAData('c2')">Add Globals</button>
+                <div id="c2-times">
+                    <label>2x2: <input type="text" class="time-input" id="c2-2x2" required></label>
+                    <label>3x3: <input type="text" class="time-input" id="c2-3x3" required></label>
+                    <label>4x4: <input type="text" class="time-input" id="c2-4x4" required></label>
+                    <label>5x5: <input type="text" class="time-input" id="c2-5x5" required></label>
+                    <label>OH: <input type="text" class="time-input" id="c2-OH" required></label>
+                    <label>Pyraminx: <input type="text" class="time-input" id="c2-Pyraminx" required></label>
+                    <label>Clock: <input type="text" class="time-input" id="c2-Clock" required></label>
+                    <label>Skewb: <input type="text" class="time-input" id="c2-Skewb" required></label>
+                    <label>Megaminx: <input type="text" class="time-input" id="c2-Megaminx" required></label>
+                    <label>Square-1: <input type="text" class="time-input" id="c2-Square-1" required></label>
+                </div>
             </div>
             <button type="submit">Optimize</button>
         </form>
@@ -58,7 +77,9 @@
         </div>
     </div>
 
-    <script src="../../js/guildford.js"></script>
+    <div id="loadingPopup" style="display: none;">Loading...</div>
+
+    <script src="../../js/guildford.js"></script>t
 </body>
 
 </html>
