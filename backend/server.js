@@ -5,15 +5,47 @@ const path = require('path');
 const app = express();
 const port = 80;
 
-let visitorCount = 0;
-
-// Make sure you specify the path to the log file
 const logFilePath = path.join(__dirname, 'log.txt');
 
+let requests = 0;
+
+// Function to initialize or read the visitor count
+function initializerequests() {
+    if (fs.existsSync(logFilePath)) {
+        // Read the first line to get the current visitor count
+        const data = fs.readFileSync(logFilePath, 'utf8');
+        const lines = data.split('\n');
+        const firstLine = lines[0].trim();
+
+        // Parse the first line as a number
+        requests = parseInt(firstLine, 10) || 0;
+    } else {
+        // If the log file doesn't exist, start with visitor count 0
+        requests = 0;
+    }
+}
+
+// Function to update the log file with the new visitor count
+function updateLogFile(logEntry) {
+    // Increment the visitor count
+    requests++;
+
+    // Read the current contents of the log file (if any)
+    const data = fs.existsSync(logFilePath) ? fs.readFileSync(logFilePath, 'utf8') : '';
+    const lines = data.split('\n').slice(1); // Skip the first line (current visitor count)
+
+    // Prepare the new content
+    const newContent = `${requests}\n${logEntry}${lines.join('\n')}`;
+
+    // Write the updated content back to the file
+    fs.writeFileSync(logFilePath, newContent, 'utf8');
+}
+
+// Initialize the visitor count on startup
+initializerequests();
+
 app.use((req, res, next) => {
-    visitorCount++;
-    const logMessage = `Request to cubingtools.de${req.path}`;
-    console.log(logMessage);
+    const logMessage = `Request to ${req.path}`;
 
     // Get current date and time
     const now = new Date();
@@ -22,12 +54,8 @@ app.use((req, res, next) => {
     // Create log entry
     const logEntry = `${timestamp} - ${logMessage}\n`;
 
-    // Append log entry to the log file
-    fs.appendFile(logFilePath, logEntry, (err) => {
-        if (err) {
-            console.error('Error writing to log file', err);
-        }
-    });
+    // Update the log file with the new visitor count and log entry
+    updateLogFile(logEntry);
 
     next();
 });
@@ -143,5 +171,5 @@ app.get('/tools/:toolName', (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+    console.log(`Server is running`);
 });

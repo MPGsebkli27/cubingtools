@@ -29,7 +29,6 @@ async function getCurrentAverage(wcaId, event) {
     }
 }
 
-// Example usage
 async function fetchWCAData(competitorId) {
     const wcaId = document.getElementById(`${competitorId}-wca`).value.toUpperCase().trim();
 
