@@ -4,92 +4,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unofficial Groupifier</title>
-    <meta name="description" content="Tool to help with organising unofficial Competition!">
-
-    <link rel="stylesheet" href="../../css/globals.css">
+    <title>Competition Grouping</title>
+    <link rel="stylesheet" href="../../css/global.css">
     <link rel="stylesheet" href="../../css/grouping.css">
+    <link rel="icon" href="/public/assets/cubingtools.png" type="image/x-icon">
 </head>
 
 <body>
-    <header class="header">
-        <a href="/" class="logo">CubingTools</a>
-        <nav class="navbar">
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a target="_blank" href="https://github.com/MPGsebkli27/cubingtools">Github</a>
-        </nav>
-    </header>
-
     <div class="container">
-        <div id="competition-setup">
-            <h1>Setup Competition</h1>
-            <label for="competition-name">Competition Name:</label>
-            <input type="text" id="competition-name" placeholder="Super Cool Unofficial Competition">
-            <label for="max-competitors">Max Competitors per Group:</label>
-            <input type="number" id="max-competitors" placeholder="10">
-            <br>
-            <div class="inline">
-                <input type="checkbox" id="do-runners">
-                <label for="do-runners">Runners</label>
+        <nav>
+            <a href="/" class="logo">CubingTools</a>
+            <div class="navbar">
+                <a href="/">Home</a>
+                <a href="mailto: info@cubingtools.de">Contact</a>
+                <a target="_blank" href="https://GitHub.com/MPGsebkli27/cubingtools">GitHub</a>
             </div>
-            <div class="inline">
-                <input type="checkbox" class="inline-checkbox" id="do-judges">
-                <label for="do-judges">Judges</label>
-            </div>
-            <button onclick="setupCompetition()">Next</button>
+        </nav>
+
+        <div id="sidebar">
+            <h2>Tools</h2>
         </div>
 
-        <div id="event-selection" style="display: none;">
-            <h1>Select Events</h1>
-            <p>Check all of the event you plan to host at your unofficial competition. If an event you want to host is
-                not here, add it with the "Add Event" button!</p>
-            <div class="inline-btn">
-                <button title="Previous Page" onclick="goToSetupCompetition()">←</button>
-                <button title="Deselect All Checkboxes" onclick="deselectAllEventCheckboxes()">Deselect All</button>
-                <button title="Add a Custom Event" onclick="addCustomEvent()">Add Event</button>
-                <button title="Select All Checkboxes" onclick="selectAllEventCheckboxes()">Select All</button>
-                <button title="Next Page" onclick="selectEvents()">→</button>
-            </div>
-            <div id="event-checkboxes"></div>
-        </div>
+        <main>
+            <div class="heading">
+                <h1>Unofficial Competition Groupifier</h1>
+                <p>
+                    This is the Unofficial Competition Groupifier. To start, input the name of the competition and the
+                    <span class="bold">NPG (Number of competitors per Group)</span>, the maximum ammount of competitors
+                    that can be in one single group.
+                </p>
+                <p>
+                    The grouping works on a round robin system. If you input a <span class="bold">WCA ID</span> as the
+                    name for a competitor, the script will recognize this and use their latest Ao12 for each official
+                    event to sort them. The first seed will go into the last group, the second in the second to last and
+                    so on.
+                </p>
 
-        <div id="competitor-setup" style="display: none;">
-            <h1>Add Competitors</h1>
-            <div class="inline-btn">
-                <button title="Previous Page" onclick="goToEventSelection()">←</button>
-                <button title="Deselect All Checkboxes" onclick="deselectAllEventCheckboxes()">Deselect All</button>
-                <button title="Select All Checkboxes" onclick="selectAllEventCheckboxes()">Select All</button>
-                <button title="Finalize Competitors" onclick="finalizeCompetitors()()">→</button>
-            </div>
-            <br>
-            <div id="competitor-form"></div>
-            <button title="Add Competitor" onclick="addCompetitor()">Add Competitor</button>
-            <!-- Competitor List Table -->
-            <div id="competitor-list-wrapper">
-                <table id="competitor-list">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Events</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Competitors will be dynamically added here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                <div id="competition-setup">
+                    <h2>Setup Competition</h2>
+                    <label>Name: <input type="text" id="competition-name"
+                            placeholder="Super Cool Unofficial Competition">
+                    </label>
+                    <label title="Number of Competitors per Group">NPG: <input type="number" id="max-competitors"
+                            placeholder="10"></label>
+                    <label><input type="checkbox" id="do-runners">Runners</label>
+                    <label><input type="checkbox" id="do-judges">Judges</label>
+                    <button onclick="setupCompetition()">Next</button>
+                </div>
+
+                <div id="event-selection" style="display: none;">
+                    <h2>Select Events</h2>
+                    <p>Check all of the event you plan to host at your unofficial competition. If an event you want to
+                        host
+                        is
+                        not here, add it with the "Add Event" button!</p>
+                    <div class="inline-btn">
+                        <button title="Previous Page" onclick="goToSetupCompetition()">←</button>
+                        <button title="Deselect All Checkboxes" onclick="deselectAllEventCheckboxes()">Deselect
+                            All</button>
+                        <button title="Add a Custom Event" onclick="addCustomEvent()">Add Event</button>
+                        <button title="Select All Checkboxes" onclick="selectAllEventCheckboxes()">Select All</button>
+                        <button title="Next Page" onclick="selectEvents()">→</button>
+                    </div>
+                    <div id="event-checkboxes"></div>
+                </div>
+
+                <div id="competitor-setup" style="display: none;">
+                    <h2>Add Competitors</h2>
+                    <div class="inline-btn">
+                        <button title="Previous Page" onclick="goToEventSelection()">←</button>
+                        <button title="Deselect All Checkboxes" onclick="deselectAllEventCheckboxes()">Deselect
+                            All</button>
+                        <button title="Select All Checkboxes" onclick="selectAllEventCheckboxes()">Select All</button>
+                        <button title="Finalize Competitors" onclick="finalizeCompetitors()">→</button>
+                    </div>
+                    <br>
+                    <div id="competitor-form"></div>
+                    <button title="Add Competitor" onclick="addCompetitor()">Add Competitor</button>
+                    <!-- Competitor List Table -->
+                    <div id="competitor-list-wrapper">
+                        <table id="competitor-list">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Events</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Competitors will be dynamically added here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
 
-        <div id="grouping-results" style="display: none;">
-            <h1>Grouping Results</h1>
-            <div id="grouping-output"></div>
-        </div>
+                <div id="grouping-results" style="display: none;">
+                    <h2>Grouping Results</h2>
+                    <div id="grouping-output"></div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>Made by <span class="bold">Sebastian Kling</span></p>
+            <p>
+                If you have any suggestions for a new tool, please feel free to contact us via <a
+                    href="mailto: info@cubingtools.de">info@cubingtools.de</a>.
+            </p>
+            <p>
+                If you find a bug, make sure to tell us
+                via the <a target="_blank" href="https://GitHub.com/MPGsebkli27/cubingtools/issues">GitHub</a>!
+            </p>
+        </footer>
     </div>
 
+    <div id="loadingPopup" style="display: none;">Loading...</div>
+
+    <script src="../../js/loadTools.js"></script>
     <script src="../../js/grouping.js"></script>
 </body>
 

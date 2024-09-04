@@ -116,8 +116,8 @@ function setupCompetition() {
         const eventCheckboxes = document.getElementById('event-checkboxes');
         eventCheckboxes.innerHTML = ''; // Clear previous checkboxes if any
 
-        // Add titles before each section of events
         let currentTitle = '';
+
         events.forEach(event => {
             let newTitle = '';
 
@@ -136,37 +136,62 @@ function setupCompetition() {
             else if (event.id === 'mrb') newTitle = 'Mirror Blocks';
             else if (event.id === 'mag') newTitle = 'Magic';
             else if (event.id === 'guildford') newTitle = 'Relays';
-            else if (event.id === '223') newTitle = 'Other Cubes';
+            else if (event.id === '223') newTitle = 'Other Puzzles';
 
             // If the title changes, add a heading before the next section
             if (newTitle && newTitle !== currentTitle) {
                 const titleDiv = document.createElement('div');
                 titleDiv.className = 'event-section-title';
                 titleDiv.textContent = newTitle;
+
+                // Add a click event listener to the titleDiv
+                // Add a click event listener to the titleDiv
+                titleDiv.addEventListener('click', () => {
+                    let nextElement = titleDiv.nextElementSibling;
+                    const checkboxes = [];
+
+                    // Gather all checkboxes under the current title
+                    while (nextElement && !nextElement.classList.contains('event-section-title')) {
+                        const checkbox = nextElement.querySelector('input[type="checkbox"]');
+                        if (checkbox) {
+                            checkboxes.push(checkbox);
+                        }
+                        nextElement = nextElement.nextElementSibling;
+                    }
+
+                    // Determine if all checkboxes are already checked
+                    const allChecked = checkboxes.every(checkbox => checkbox.checked);
+
+                    // Set all checkboxes to the opposite of allChecked
+                    checkboxes.forEach(checkbox => {
+                        checkbox.checked = !allChecked;
+                    });
+                });
+
+
                 eventCheckboxes.appendChild(titleDiv);
                 currentTitle = newTitle;
             }
 
-            // Create the checkbox and label for the event
+            // Create the checkbox
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.id = event.id;
             checkbox.value = event.id;
             checkbox.name = 'event-checkbox';
 
+            // Create the label and append the checkbox inside it
             const label = document.createElement('label');
-            label.htmlFor = event.id;
-            label.textContent = event.name;
+            label.appendChild(checkbox);          // Append the checkbox to the label
+            label.appendChild(document.createTextNode(event.name)); // Add the event name as the label's text
 
-            const div = document.createElement('div');
-            div.appendChild(checkbox);
-            div.appendChild(label);
-            div.classList.add('inline');
+            // Append the label directly to the parent container
+            eventCheckboxes.appendChild(label);
 
-            eventCheckboxes.appendChild(div);
         });
     }
 }
+
 
 
 function addCustomEvent() {
@@ -178,22 +203,20 @@ function addCustomEvent() {
 
     const eventCheckboxes = document.getElementById('event-checkboxes');
 
+    // Create the checkbox
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.id = newEventId;
     checkbox.value = newEventId;
-    checkbox.name = 'event-checkbox'
+    checkbox.name = 'event-checkbox';
 
+    // Create the label and append the checkbox inside it
     const label = document.createElement('label');
-    label.htmlFor = newEventId;
-    label.textContent = newEventName;
+    label.appendChild(checkbox);          // Append the checkbox to the label
+    label.appendChild(document.createTextNode(newEventName)); // Add the event name as the label's text
 
-    const div = document.createElement('div');
-    div.appendChild(checkbox);
-    div.appendChild(label);
-    div.classList += 'inline'
-
-    eventCheckboxes.appendChild(div);
+    // Append the label directly to the parent container
+    eventCheckboxes.appendChild(label);
 }
 
 function goToSetupCompetition() {
@@ -253,7 +276,13 @@ function updateCompetitorForm() {
 
 function addCompetitor() {
     const name = document.getElementById('competitor-name').value;
+    var wcaId = false;
     if (!name) return;
+
+    // Test if input follows WCA ID order
+    if (/^\d{4}[a-zA-Z]{4}\d{2}$/.test(name.toUpperCase().trim())) {
+        wcaId = name.toUpperCase().trim();
+    }
 
     const eventCheckboxes = document.querySelectorAll('#competitor-form input[type="checkbox"]:checked');
     const events = Array.from(eventCheckboxes).map(checkbox => checkbox.value);
@@ -261,6 +290,7 @@ function addCompetitor() {
     const competitor = {
         id: competitors.length + 1,
         name,
+        wcaId,
         events,
         groupAssignments: {} // Initialize group assignments for each event
     };
@@ -269,15 +299,24 @@ function addCompetitor() {
     displayCompetitors();
 }
 
-function displayCompetitors() {
+async function displayCompetitors() {
+    showLoadingPopup(true);
     const competitorListBody = document.querySelector('#competitor-list tbody');
     competitorListBody.innerHTML = '';
 
-    competitors.forEach((competitor, index) => {
+    for (let index = 0; index < competitors.length; index++) {
+        const competitor = competitors[index];
+
+        // If the competitor has a WCA ID but no name yet, fetch it
+        if (competitor.wcaId && !competitor.nameFetched) {
+            competitor.name = await getCompetitorName(competitor.wcaId);
+            competitor.nameFetched = true; // Mark that the name has been fetched
+        }
+
         const row = document.createElement('tr');
 
         const idCell = document.createElement('td');
-        idCell.textContent = index + 1;
+        idCell.textContent = competitor.id;
 
         const nameCell = document.createElement('td');
         nameCell.textContent = competitor.name;
@@ -288,7 +327,7 @@ function displayCompetitors() {
         const actionsCell = document.createElement('td');
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
-        deleteButton.onclick = () => deleteCompetitor(index);
+        deleteButton.onclick = () => deleteCompetitor(competitor.id);
         deleteButton.classList.add('delete-btn');
         actionsCell.appendChild(deleteButton);
 
@@ -298,15 +337,47 @@ function displayCompetitors() {
         row.appendChild(actionsCell);
 
         competitorListBody.appendChild(row);
-    });
+    }
 
     updateCompetitorForm();
+    showLoadingPopup(false);
 }
 
-function deleteCompetitor(index) {
-    competitors.splice(index, 1);
-    displayCompetitors();
+
+async function getCompetitorName(wcaId) {
+    showLoadingPopup(true);
+    const apiUrl = `/api/wca/${wcaId}/name`;
+
+    try {
+        // Fetch the name from the backend
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Error fetching data: ${response.statusText}`);
+        }
+        const data = await response.json();
+
+        // Return the name
+        return data.name;
+
+    } catch (error) {
+        console.error(`Error fetching name for event ${wcaId}: ${error.message}`);
+        return wcaId;
+    } finally {
+        showLoadingPopup(false);
+    }
 }
+
+function deleteCompetitor(id) {
+    // Find the index of the competitor with the matching id
+    const index = competitors.findIndex(competitor => competitor.id === id);
+
+    // If a competitor with the given id is found, remove it from the array
+    if (index !== -1) {
+        competitors.splice(index, 1);
+        displayCompetitors();
+    }
+}
+
 
 function finalizeCompetitors() {
     competitionData.competitors = competitors;
@@ -317,95 +388,128 @@ function finalizeCompetitors() {
     generateGroups();
 }
 
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+async function sortArray(array, eventId) {
+    showLoadingPopup(true);
+
+    // Store the average times for each competitor
+    const averages = {};
+
+    for (let i = 0; i < array.length; i++) {
+        const competitor = array[i];
+        if (competitor.wcaId) {
+            try {
+                const response = await fetch(`/api/WCA/${competitor.wcaId}/${eventId}`);
+                const data = await response.json();
+                averages[competitor.wcaId] = data.average || null;
+            } catch (error) {
+                console.error(`Failed to fetch data for ${competitor.wcaId}:`, error);
+                averages[competitor.wcaId] = null;
+            }
+        } else {
+            averages[competitor.wcaId] = null;
+        }
     }
+
+    // Sort the array based on the retrieved averages
+    array.sort((a, b) => {
+        const avgA = averages[a.wcaId];
+        const avgB = averages[b.wcaId];
+
+        // If both have averages, sort by average
+        if (avgA !== null && avgB !== null) {
+            return avgA - avgB;
+        }
+
+        // If one has an average and the other doesn't, the one with the average goes first
+        if (avgA !== null) return -1;
+        if (avgB !== null) return 1;
+
+        // If neither has an average, sort by WCA ID (or another fallback criterion)
+        return (a.wcaId || '').localeCompare(b.wcaId || '');
+    });
+    showLoadingPopup(false);
+    return array;
 }
 
-function generateGroups() {
+async function generateGroups() {
+    showLoadingPopup(true);
     const maxCompetitors = competitionData.maxCompetitors;
     const groupingOutput = document.getElementById('grouping-output');
-    groupingOutput.innerHTML = '';
+    groupingOutput.innerHTML = '';  // Clear the output div before appending
 
-    competitionData.groups = {};
+    competitionData.groups = {};  // Reset groups data
 
-    selectedEvents.forEach(eventId => {
-        const eventCompetitors = competitors.filter(c => c.events.includes(eventId));
+    for (const eventId of selectedEvents) {
+        let eventCompetitors = competitors.filter(competitor => competitor.events.includes(eventId));
+
+        // Sort the competitors by their average times using the updated sortArray function
+        eventCompetitors = await sortArray(eventCompetitors, eventId);
 
         // Determine the number of groups
         const numGroups = Math.ceil(eventCompetitors.length / maxCompetitors);
-        const eventGroups = [];
+        const eventGroups = Array.from({ length: numGroups }, () => ({
+            competitors: [],
+            judges: [],
+            scramblers: [],
+            runners: []
+        }));
 
-        // Initialize empty groups
-        for (let i = 0; i < numGroups; i++) {
-            eventGroups.push({
-                competitors: [],
-                judges: [],
-                scramblers: [],
-                runners: []
-            });
-        }
-
-        // Distribute competitors evenly among the groups using a round-robin approach
+        // Distribute competitors evenly among the groups, starting with the last group
         eventCompetitors.forEach((competitor, index) => {
-            const groupIndex = index % numGroups;
+            const groupIndex = (numGroups - 1) - (index % numGroups);
             eventGroups[groupIndex].competitors.push(competitor);
-
-            // Assign the competitor to this group for this event
             competitor.groupAssignments[eventId] = groupIndex + 1; // Groups are 1-indexed
         });
 
+
         // Assign runners, judges, and scramblers ensuring no overlap
-        eventGroups.forEach((group, groupIndex) => {
+        for (let groupIndex = 0; groupIndex < eventGroups.length; groupIndex++) {
+            const group = eventGroups[groupIndex];
+
             // Number of Scramblers and Runners per group
             const numOfHelpers = Math.ceil(Math.pow(group.competitors.length / 6, 1 / 1.32));
 
-            // Shuffle Array to have different assignments per group
-            shuffleArray(eventCompetitors);
-
             // Assign scramblers: competitors not in this group but in the event
-            const availableScramblers = eventCompetitors.filter(c =>
-                c.groupAssignments[eventId] !== (groupIndex + 1)
-            );
-
-            // Get the first numOfHelpers scramblers to scramble a group
+            const availableScramblers = eventCompetitors.filter(competitor => competitor.groupAssignments[eventId] !== (groupIndex + 1));
             if (availableScramblers.length > 0) {
                 group.scramblers = availableScramblers.slice(0, numOfHelpers);
             }
 
             // Assign judges if applicable
             if (includeJudges) {
-                const availableJudges = eventCompetitors.filter(c =>
-                    !group.competitors.includes(c) && !group.judges.includes(c) && !group.runners.includes(c) && !group.scramblers.includes(c) // Not already competing, juding, running or scrambling that group
+                const availableJudges = eventCompetitors.filter(competitor =>
+                    !group.competitors.includes(competitor) &&
+                    !group.judges.includes(competitor) &&
+                    !group.runners.includes(competitor) &&
+                    !group.scramblers.includes(competitor)
                 );
-
                 group.judges = availableJudges.slice(0, group.competitors.length);
             }
 
             // Assign runners if applicable
             if (includeRunners) {
-                const availableRunners = eventCompetitors.filter(c =>
-                    !group.competitors.includes(c) && !group.judges.includes(c) && !group.runners.includes(c) && !group.scramblers.includes(c) // Not already competing, juding, running or scrambling that group
+                const availableRunners = eventCompetitors.filter(competitor =>
+                    !group.competitors.includes(competitor) &&
+                    !group.judges.includes(competitor) &&
+                    !group.runners.includes(competitor) &&
+                    !group.scramblers.includes(competitor)
                 );
-
-                // Get the first numOfHelpers scramblers to scramble a group
                 if (availableRunners.length > 0) {
-                    group.scramblers = availableRunners.slice(0, numOfHelpers);
+                    group.runners = availableRunners.slice(0, numOfHelpers);
                 }
             }
-        });
+        }
 
+        // Store groups in competitionData
         competitionData.groups[eventId] = eventGroups;
 
+        // Append the groups to the DOM
         const event = events.find(e => e.id === eventId);
         const eventDiv = document.createElement('div');
         eventDiv.className = 'event-group';
 
         const eventTitle = document.createElement('h3');
         eventTitle.textContent = event.name;
-
         eventDiv.appendChild(eventTitle);
 
         eventGroups.forEach((group, groupIndex) => {
@@ -414,48 +518,28 @@ function generateGroups() {
 
             const groupTitle = document.createElement('h4');
             groupTitle.textContent = `Group ${groupIndex + 1}`;
-
             groupDiv.appendChild(groupTitle);
 
             const competitorDiv = document.createElement('ul');
             group.competitors.forEach(competitor => {
                 const competitorName = document.createElement('li');
-                competitorName.textContent = `${competitor.name}`;
-
+                competitorName.textContent = competitor.name;
                 competitorDiv.appendChild(competitorName);
             });
             groupDiv.appendChild(competitorDiv);
 
             if (includeJudges && group.judges.length !== 0) {
                 const judgesDiv = document.createElement('div');
-                judgesDiv.textContent = `Judges: ${group.judges.map(j => j.name).join(', ')}`;
+                judgesDiv.innerHTML = `Judge(s): <span>${group.judges.map(j => j.name).join(', ')}</span>`;
                 groupDiv.appendChild(judgesDiv);
             }
 
             if (includeRunners) {
-                if (!group.runners.length !== 0) {
-
-                    const runnersDiv = document.createElement('div');
-                    runnersDiv.textContent = `Runner: ${group.runners.map(r => r.name).join(', ')}`;
-                    groupDiv.appendChild(runnersDiv);
-
-                } else if (group.runners.length == 0) {
-
-                    const runnersDiv = document.createElement('div');
-                    runnersDiv.textContent = `Running Judges`;
-                    groupDiv.appendChild(runnersDiv);
-
-                }
+                const runnersDiv = document.createElement('div');
+                runnersDiv.innerHTML = group.runners.length !== 0 ?
+                    `Runner(s): <span>${group.runners.map(r => r.name).join(', ')}</span>` : 'Running Judges';
+                groupDiv.appendChild(runnersDiv);
             }
 
             const scramblersDiv = document.createElement('div');
-            scramblersDiv.textContent = `Scrambler(s): ${group.scramblers.map(s => s.name).join(', ')}`;
-
-            groupDiv.appendChild(scramblersDiv);
-
-            eventDiv.appendChild(groupDiv);
-        });
-
-        groupingOutput.appendChild(eventDiv);
-    });
-}
+            scramblersDiv.innerHTML = `Scrambler(s): <span>${group.scramblers.map(s => s.name).

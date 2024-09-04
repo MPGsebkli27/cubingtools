@@ -1,35 +1,51 @@
-document.getElementById('timeForm').addEventListener('submit', function (event) {
-    event.preventDefault();
-    const competitor1 = collectCompetitorTimes('c1');
-    const competitor2 = collectCompetitorTimes('c2');
-    showLoadingPopup(true);
-    const result = optimizeGuildford(competitor1, competitor2);
-    displayResults(result);
+// Get the pickup time
+var pickupTime = parseFloat(document.getElementById('pickup').value) || 0;
 
+// Attach event listener to the time form submit button
+document.getElementById('timeForm').addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const competitor1Id = 'c1';
+    const competitor2Id = 'c2';
+
+    // Fetch WCA data for both competitors
+    await getWCAData(competitor1Id);
+    await getWCAData(competitor2Id);
+
+    // Collect the times after they have been populated by WCA data
+    const competitor1 = collectCompetitorTimes(competitor1Id);
+    const competitor2 = collectCompetitorTimes(competitor2Id);
+
+    showLoadingPopup(true);
+
+    // Optimize Guildford challenge with the collected times
+    const result = optimizeGuildford(competitor1, competitor2);
+
+    // Display results
+    displayResults(result, competitor1, competitor2);
+
+    showLoadingPopup(false);
 });
 
-
+// Function to fetch average times from the API for a given WCA ID and event
 async function getCurrentAverage(wcaId, event) {
     const apiUrl = `/api/wca/${wcaId}/${event}`;
 
     try {
-        // Fetch the average from the backend
         const response = await fetch(apiUrl);
         if (!response.ok) {
             throw new Error(`Error fetching data: ${response.statusText}`);
         }
         const data = await response.json();
-
-        // Return the average
         return data.average;
-
     } catch (error) {
         console.error(`Error fetching average for event ${event}: ${error.message}`);
         return null;
     }
 }
 
-async function fetchWCAData(competitorId) {
+// Function to get WCA data for all events for a given competitor
+async function getWCAData(competitorId) {
     const wcaId = document.getElementById(`${competitorId}-wca`).value.toUpperCase().trim();
 
     showLoadingPopup(true);
@@ -68,29 +84,27 @@ async function fetchWCAData(competitorId) {
     }
 }
 
-// Input WCA Information in input fields
-
+// Function to populate competitor times in the form
 function fillCompetitorTimes(competitorId, times) {
     Object.keys(times).forEach(event => {
         const input = document.getElementById(`${competitorId}-${event}`);
         if (times[event] !== null) {
-            input.value = times[event].toFixed(2);
+            input.value = times[event].toFixed(2); // Populate with average time
         } else {
-            input.value = 'DNF'; // Leave empty if no results
+            input.value = 'DNF'; // Mark as DNF if no average available
         }
     });
 }
 
-// Collect all Competitor times
-
+// Existing function to collect times from the form fields
 function collectCompetitorTimes(competitorId) {
     const events = ['2x2', '3x3', '4x4', '5x5', 'OH', 'Pyraminx', 'Clock', 'Skewb', 'Megaminx', 'Square-1'];
     const times = {};
 
     events.forEach(event => {
         const value = document.getElementById(`${competitorId}-${event}`).value;
-        if (value === null || isNaN(value)) {
-            times[event] = 600; // Unable to solve
+        if (value === 'DNF' || isNaN(value)) {
+            times[event] = 600; // Use 600 seconds for DNF (did not finish)
         } else {
             times[event] = parseFloat(value);
         }
@@ -99,6 +113,7 @@ function collectCompetitorTimes(competitorId) {
     return times;
 }
 
+// Function to generate all possible combinations of events split between two competitors
 function generateCombinations(events) {
     const combinations = [];
     const totalCombinations = 1 << events.length;
@@ -119,28 +134,33 @@ function generateCombinations(events) {
     return combinations;
 }
 
-function calculateMaxTime(combination, competitor1, competitor2, pickupTime) {
-    const time1 = combination[0].reduce((sum, event) => sum + (competitor1[event] || 0) + pickupTime, 0) - pickupTime;
-    const time2 = combination[1].reduce((sum, event) => sum + (competitor2[event] || 0) + pickupTime, 0) - pickupTime;
+// Function to calculate the maximum time taken between two competitors for a combination of events
+function calculateMaxTime(combination, competitor1, competitor2, pickup) {
+    const time1 = combination[0].reduce((sum, event) => sum + (competitor1[event] || 0) + pickup, 0) - pickup;
+    const time2 = combination[1].reduce((sum, event) => sum + (competitor2[event] || 0) + pickup, 0) - pickup;
     return Math.max(time1, time2);
 }
 
+// Function to format time in seconds to "Xm Ys" format
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}m ${secs.toFixed(2)}s`;
 }
 
+// Function to find the best combination of events split between two competitors based on minimum total time
 function optimizeGuildford(competitor1, competitor2) {
     const events = ['2x2', '3x3', '4x4', '5x5', 'OH', 'Pyraminx', 'Clock', 'Skewb', 'Megaminx', 'Square-1'];
     const combinations = generateCombinations(events);
     let bestCombination = null;
     let bestTime = Infinity;
 
-    const pickupTime = parseFloat(document.getElementById('pickup').value) || 0;
+    pickupTime = parseFloat(document.getElementById('pickup').value) || 0;
 
     const results = combinations.map(combination => {
         const maxTime = calculateMaxTime(combination, competitor1, competitor2, pickupTime);
+        console.log(pickupTime);
+
 
         if (maxTime < bestTime) {
             bestTime = maxTime;
@@ -164,33 +184,42 @@ function optimizeGuildford(competitor1, competitor2) {
     };
 }
 
-function displayResults(result) {
+// Function to display the results in the HTML, including predicted times for each competitor
+function displayResults(result, competitor1, competitor2) {
     const bestCombinationDiv = document.getElementById('bestCombination');
     const allCombinationsDiv = document.getElementById('allCombinations');
 
+    // Calculate individual competitor times for the best combination
+    const competitor1Events = result.bestCombination.combination[0];
+    const competitor2Events = result.bestCombination.combination[1];
+
+    const competitor1Time = competitor1Events.reduce((sum, event) => sum + (competitor1[event] || 0) + pickupTime, 0) - pickupTime;
+    const competitor2Time = competitor2Events.reduce((sum, event) => sum + (competitor2[event] || 0) + pickupTime, 0) - pickupTime;
+
     bestCombinationDiv.innerHTML =
-        `<h3>Best Combination</h3>
-        <p>Competitor 1: ${result.bestCombination.combination[0].join(', ')}</p>
-        <p>Competitor 2: ${result.bestCombination.combination[1].join(', ')}</p>
-        <p>Time: ${result.bestCombination.formattedMaxTime}</p>`;
+        `
+            <h3>Best Combination</h3>
+            <p>Competitor 1 (${formatTime(competitor1Time)}): ${competitor1Events.join(', ')}</p>
+            <p>Competitor 2 (${formatTime(competitor2Time)}): ${competitor2Events.join(', ')}</p>
+            <p>Total Time: ${result.bestCombination.formattedMaxTime}</p>
+        `;
 
     allCombinationsDiv.innerHTML = '<h3>All Combinations (Ordered by Speed)</h3>';
     result.allCombinations.forEach(combination => {
-
-        // If the time is greater than 10 minutes, do not add it to the list. (Cannot solve)
         if (combination.maxTime < 600) {
+            const comb1Time = combination.combination[0].reduce((sum, event) => sum + (competitor1[event] || 0) + pickupTime, 0) - pickupTime;
+            const comb2Time = combination.combination[1].reduce((sum, event) => sum + (competitor2[event] || 0) + pickupTime, 0) - pickupTime;
+
             allCombinationsDiv.innerHTML +=
                 `<div>
-                    <p>Competitor 1: ${combination.combination[0].join(', ')}</p>
-                    <p>Competitor 2: ${combination.combination[1].join(', ')}</p>
-                    <p>Time: ${combination.formattedMaxTime}</p>
-                </div>`;
+                        <p>Competitor 1 (${formatTime(comb1Time)}): ${combination.combination[0].join(', ')}</p>
+                        <p>Competitor 2 (${formatTime(comb2Time)}): ${combination.combination[1].join(', ')}</p>
+                        <p>Total Time: ${combination.formattedMaxTime}</p>
+                 </div>`;
         }
     });
-    showLoadingPopup(false);
 }
 
+// Function to show or hide the loading popup
 function showLoadingPopup(show) {
-    const popup = document.getElementById('loadingPopup');
-    popup.style.display = show ? 'flex' : 'none';
-}
+    const popup = doc

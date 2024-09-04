@@ -1,115 +1,89 @@
-/* Headings */
-h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-    text-align: center;
+.inline {
+    display: flex;
+    align-items: center;
+    margin-top: var(--space-sm);
 }
 
-h3,
-h4 {
-    margin: 10px 0;
+.inline-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: var(--space-sm) 0;
 }
+
 
 /* Labels and inputs */
-label {
-    font-weight: 500;
-}
-
-input[type="text"],
-input[type="number"] {
-    width: 100%;
-    margin: 5px 0;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    background-color: #3b3e42;
-    color: #f0f0f0;
-    font-size: 1.25rem;
-}
 
 input[type="checkbox"] {
-    margin-right: 10px;
+    margin-right: var(--space-sm);
 }
 
-/* Buttons */
-button {
-    background-color: #007acc;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    margin: 5px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #005a99;
-}
-
-/* Competitor CSS */
-ul li {
-    margin-left: 25px;
-}
 
 /* Event section titles */
+
 .event-section-title {
-    font-size: .8em;
+    font-size: 0.8em;
     font-weight: bold;
-    margin-top: 20px;
-    color: #838383;
-    padding-bottom: 5px;
+    margin-top: var(--space-md);
+    color: var(--secondary-text);
+    padding-bottom: var(--space-xs);
+    cursor: pointer;
+    user-select: none;
 }
 
+
 /* Competitor List Table Styling */
+
 #competitor-list-wrapper {
     max-height: 300px;
-    /* Set the max height of the table */
     overflow-y: auto;
-    /* Enable vertical scrolling */
-    border: 1px solid #ccc;
-    margin-top: 10px;
+    border: 1px solid var(--input-border);
+    margin-top: var(--space-sm);
 }
 
 #competitor-list {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
-    /* Ensure columns are fixed-width */
 }
 
 #competitor-list th,
 #competitor-list td {
-    padding: 10px;
+    padding: var(--space-sm);
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--input-border);
 }
 
-/* Specific column widths */
+/* ID column widths */
+
 #competitor-list th:nth-child(1),
 #competitor-list td:nth-child(1) {
     width: 50px;
-    /* Set ID column width */
 }
 
 #competitor-list th {
-    background-color: #3b3e42;
+    background-color: var(--main-lighter);
     position: sticky;
     top: 0;
-    /* Make the header sticky */
     z-index: 1;
 }
 
 #competitor-list .delete-btn {
     background-color: #e74c3c;
-    color: white;
+    color: var(--main-text);
     border: none;
-    padding: 5px 10px;
+    padding: var(--space-xxs) var(--space-xs);
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: var(--main-radius);
 }
 
 #competitor-list .delete-btn:hover {
     background-color: #c0392b;
 }
+
+
+/* Group Styles */
+
+.event-group {
+    background-color: var(--input-background);
+    border: 1

@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+:root {
+    /* Radius */
+    --main-radius: 5px;
+
+    /* Spacing */
+    --space-xxs: 4px;
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 20px;
+    --space-lg: 32px;
+    --space-xl: 52px;
+    --space-xxl: 84px;
+
+    /* Colors */
+    --main-background: #1e1e1e;
+    --secondary-background: #252525;
+    --main-lighter: #333333;
+    --main-text: #ffffff;
+    --secondary-text: #b3b3b3;
+    --hover-text: #ffffff;
+    --hover-background: #444444;
+    --link-underline: #ffffff;
+    --input-background: #2c2c2c;
+    --input-border: #444444;
+    --button-background: #3a86ff;
+
+    /* Fonts */
+    --font-main: 'Inter', sans-serif;
+    --font-code: 'Courier', sans-serif;
+    --font-size-base: 16px;
+    --font-size-lg: 18px;
+    --font-size-xl: 32px;
+
+    /* Padding & Margin */
+    --main-padding: 16px;
+    --main-margin: 8px;
+}
+
+::-webkit-scrollbar {
+    background-color: transparent;
+    border-radius: var(--main-radius);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border: 1px solid var(--input-border);
+    border-radius: var(--main-radius);
+    cursor: pointer;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-main);
+    font-size: var(--font-size-base);
+}
+
+body {
+    background-color: var(--main-background);
+    color: var(--main-text);
+}
+
+.container {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 0.3fr 2.9fr 0.6fr;
+    grid-template-areas:
+        "nav nav nav nav"
+        "sidebar main main main"
+        "sidebar footer footer footer";
+    grid-gap: var(--main-margin);
+}
+
+.container>* {
+    border-radius: var(--main-radius);
+    padding: var(--main-padding);
+    background-color: var(--secondary-background);
+}
+
+button {
+    padding: var(--space-sm) var(--space-md);
+    border: none;
+    border-radius: var(--main-radius);
+    background-color: var(--main-text);
+    color: var(--main-background);
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+}
+
+button:hover {
+    background-color: var(--hover-background);
+    color: var(--hover-text);
+}
+
+
+/* Text Styles */
+
+.bold {
+    font-weight: bold;
+}
+
+a {
+    position: relative;
+    color: var(--main-text);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+a::before {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--link-underline);
+    transition: width 0.2s;
+}
+
+a:hover::before {
+    width: 100%;
+}
+
+
+/* Nav Section Styles */
+
+nav {
+    grid-area: nav;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+nav .logo {
+    font-size: var(--font-size-xl);
+    color: var(--main-text);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+nav .navbar {
+    display: flex;
+    align-items: center;
+}
+
+nav .navbar a {
+    font-size: var(--font-size-lg);
+    margin: 0 var(--space-sm);
+}
+
+
+/* Sidebar Section Styles */
+
+#sidebar {
+    grid-area: sidebar;
+}
+
+#sidebar .tool-tag {
+    display: block;
+    color: var(--main-text);
+    text-decoration: none;
+    background-color: var(--main-lighter);
+    border-radius: var(--main-radius);
+    padding: var(--main-padding);
+    margin: var(--space-xs) 0;
+}
+
+
+/* Main Section Styles */
+
+main {
+    grid-area: main;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: var(--space-lg);
+}
+
+main .heading {
+    margin: 0 13.5%;
+}
+
+main h1 {
+    font-size: var(--font-size-xl);
+    color: var(--main-text);
+    margin-bottom: var(--space-sm);
+}
+
+main h2 {
+    font-size: var(--font-size-lg);
+    color: var(--main-text);
+    margin-bottom: var(--space-sm);
+}
+
+main p {
+    margin-bottom: var(--space-sm);
+    color: var(--secondary-text);
+    line-height: 1.5;
+}
+
+main label {
+    font-size: var(--font-size-lg);
+    color: var(--main-text);
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-sm);
+}
+
+main input[type="text"],
+main input[type="number"] {
+    width: 100%;
+    padding: var(--space-xs);
+    border-radius: var(--main-radius);
+    border: 1px solid var(--input-border);
+    background-color: var(--input-background);
+    color: var(--main-text);
+    margin-top: var(--space-xs);
+    margin-left: var(--space-sm);
+}
+
+
+/* Footer Section Styles */
+
+footer {
+    grid-area: footer;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    color: var(--secondary-text);
+}
+
+
+/* Basic styling for loading popup */
+
+#loadingPopup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--main-text);
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+
+/* Media Query */
+
+@media only screen and (max-width: 650px) {
+    .container {
+        grid-template-columns: 1fr;
+        grid-template-rows: 0.4fr 1fr 5.4fr 0.8fr;
+        grid-template-areas:
+            "nav"
+            "sidebar"
+            "main"
+            "footer";
+    }
+
+    #sidebar {
+        display: flex;
+        overflow-x: auto;
+        grid-area: sidebar;
+        padding: 0 var(--main-padding);
+        scroll-snap-type: x mandatory;
+    }
+
+    #sidebar h2 {
+        display: none;
+    }
+
+    #sidebar h3 {
+        font-size: .8em;
+    }
+
+    #sidebar .tool-tag {
+        display: flex;
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        justify-content: center;
+        align-items: center;
+        margin-right: var(--main-margin);
+        width: 33%;
+    }
+
+    .container>* {
+        border-radius: 0;
+    }
+
+    .logo {
+        display: none;
+    }
+}

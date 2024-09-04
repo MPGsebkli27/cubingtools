@@ -4,82 +4,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2-Man Guildford Optimizer</title>
-    <meta name="description" content="Optimizes a 2-Man Mini Guildford based on your global times!">
-    <link rel="stylesheet" href="../../css/globals.css">
+    <title>Guildford Optimizer</title>
+    <link rel="stylesheet" href="../../css/global.css">
     <link rel="stylesheet" href="../../css/guildford.css">
+    <link rel="icon" href="/public/assets/cubingtools.png" type="image/x-icon">
 </head>
 
 <body>
-    <header class="header">
-        <a href="/" class="logo">CubingTools</a>
-        <nav class="navbar">
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a target="_blank" href="https://github.com/MPGsebkli27/cubingtools">Github</a>
-        </nav>
-    </header>
-
     <div class="container">
-        <h1>Mini Guildford Optimizer</h1>
-        <p>
-            This is the 2-Man Mini Guildford Optimizer. To start, input your global times for each event <span
-                class="bold">in seconds</span> for your partner and yourself.
-            <br><br>
-            If you aren't sure what your globals are, you can also input your WCA ID. This will return your latest Ao12
-            for each event!
-            <br><br>
-            If you cannot solve a puzzle, or simply do not want to, you can input DNF as your time.
-            <br><br>
-        </p>
-        <label>Pick Up Time: <input type="number" class="time-input pickup" id="pickup" value="1.5"></label>
-        <form id="timeForm">
-            <div class="competitor">
-                <h3>Competitor 1</h3>
-                <label>WCA ID: <input type="text" class="time-input" id="c1-wca"></label>
-                <button type="button" onclick="fetchWCAData('c1')">Add Globals</button>
-                <div id="c1-times">
-                    <label>2x2: <input type="text" class="time-input" id="c1-2x2" required></label>
-                    <label>3x3: <input type="text" class="time-input" id="c1-3x3" required></label>
-                    <label>4x4: <input type="text" class="time-input" id="c1-4x4" required></label>
-                    <label>5x5: <input type="text" class="time-input" id="c1-5x5" required></label>
-                    <label>OH: <input type="text" class="time-input" id="c1-OH" required></label>
-                    <label>Pyraminx: <input type="text" class="time-input" id="c1-Pyraminx" required></label>
-                    <label>Clock: <input type="text" class="time-input" id="c1-Clock" required></label>
-                    <label>Skewb: <input type="text" class="time-input" id="c1-Skewb" required></label>
-                    <label>Megaminx: <input type="text" class="time-input" id="c1-Megaminx" required></label>
-                    <label>Square-1: <input type="text" class="time-input" id="c1-Square-1" required></label>
-                </div>
+        <nav>
+            <a href="/" class="logo">CubingTools</a>
+            <div class="navbar">
+                <a href="/">Home</a>
+                <a href="mailto: info@cubingtools.de">Contact</a>
+                <a target="_blank" href="https://GitHub.com/MPGsebkli27/cubingtools">GitHub</a>
             </div>
-            <div class="competitor">
-                <h3>Competitor 2</h3>
-                <label>WCA ID: <input type="text" class="time-input" id="c2-wca"></label>
-                <button type="button" onclick="fetchWCAData('c2')">Add Globals</button>
-                <div id="c2-times">
-                    <label>2x2: <input type="text" class="time-input" id="c2-2x2" required></label>
-                    <label>3x3: <input type="text" class="time-input" id="c2-3x3" required></label>
-                    <label>4x4: <input type="text" class="time-input" id="c2-4x4" required></label>
-                    <label>5x5: <input type="text" class="time-input" id="c2-5x5" required></label>
-                    <label>OH: <input type="text" class="time-input" id="c2-OH" required></label>
-                    <label>Pyraminx: <input type="text" class="time-input" id="c2-Pyraminx" required></label>
-                    <label>Clock: <input type="text" class="time-input" id="c2-Clock" required></label>
-                    <label>Skewb: <input type="text" class="time-input" id="c2-Skewb" required></label>
-                    <label>Megaminx: <input type="text" class="time-input" id="c2-Megaminx" required></label>
-                    <label>Square-1: <input type="text" class="time-input" id="c2-Square-1" required></label>
-                </div>
-            </div>
-            <button type="submit">Optimize</button>
-        </form>
-        <div class="result" id="result">
-            <h2>Results</h2>
-            <div id="bestCombination"></div>
-            <div id="allCombinations"></div>
+        </nav>
+
+        <div id="sidebar">
+            <h2>Tools</h2>
         </div>
+
+        <main>
+            <div class="heading">
+                <h1>Mini Guildford Optimizer</h1>
+                <p>
+                    This is the 2-Man Mini Guildford Optimizer. To start, input your global times for each event
+                    <span class="bold">in seconds</span> for your partner and yourself.
+                </p>
+                <p>
+                    If you aren't sure what your globals are, you can also input your WCA ID. This will return your
+                    latest Ao12 for each event!
+                </p>
+                <p>
+                    If you cannot solve a puzzle, or simply do not want to, you can input DNF as your time.
+                </p>
+
+                <label>Pick Up Time: <input type="number" class="time-input pickup" id="pickup" value="1.5"></label>
+                <form id="timeForm">
+
+                    <div class="competitor">
+                        <h3>Competitor 1</h3>
+                        <label>WCA: <input type="text" class="time-input" id="c1-wca"></label>
+                        <button type="button" onclick="getWCAData('c1')">Add Globals</button>
+                        <div id="c1-times">
+                            <label>2x2: <input type="text" class="time-input" id="c1-2x2" required></label>
+                            <label>3x3: <input type="text" class="time-input" id="c1-3x3" required></label>
+                            <label>4x4: <input type="text" class="time-input" id="c1-4x4" required></label>
+                            <label>5x5: <input type="text" class="time-input" id="c1-5x5" required></label>
+                            <label>OH: <input type="text" class="time-input" id="c1-OH" required></label>
+                            <label>Pyraminx: <input type="text" class="time-input" id="c1-Pyraminx" required></label>
+                            <label>Clock: <input type="text" class="time-input" id="c1-Clock" required></label>
+                            <label>Skewb: <input type="text" class="time-input" id="c1-Skewb" required></label>
+                            <label>Megaminx: <input type="text" class="time-input" id="c1-Megaminx" required></label>
+                            <label>Squan: <input type="text" class="time-input" id="c1-Square-1" required></label>
+                        </div>
+                    </div>
+
+                    <div class="competitor">
+                        <h3>Competitor 2</h3>
+                        <label>WCA: <input type="text" class="time-input" id="c2-wca"></label>
+                        <button type="button" onclick="getWCAData('c2')">Add Globals</button>
+                        <div id="c2-times">
+                            <label>2x2: <input type="text" class="time-input" id="c2-2x2" required></label>
+                            <label>3x3: <input type="text" class="time-input" id="c2-3x3" required></label>
+                            <label>4x4: <input type="text" class="time-input" id="c2-4x4" required></label>
+                            <label>5x5: <input type="text" class="time-input" id="c2-5x5" required></label>
+                            <label>OH: <input type="text" class="time-input" id="c2-OH" required></label>
+                            <label>Pyraminx: <input type="text" class="time-input" id="c2-Pyraminx" required></label>
+                            <label>Clock: <input type="text" class="time-input" id="c2-Clock" required></label>
+                            <label>Skewb: <input type="text" class="time-input" id="c2-Skewb" required></label>
+                            <label>Megaminx: <input type="text" class="time-input" id="c2-Megaminx" required></label>
+                            <label>Squan: <input type="text" class="time-input" id="c2-Square-1" required></label>
+                        </div>
+                    </div>
+
+                    <button type="submit">Optimize</button>
+
+                </form>
+                <div class="result" id="result">
+                    <h2>Results</h2>
+                    <div id="bestCombination"></div>
+                    <div id="allCombinations"></div>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <p>Made by <span class="bold">Sebastian Kling</span></p>
+            <p>
+                If you have any suggestions for a new tool, please feel free to contact us via <a
+                    href="mailto: info@cubingtools.de">info@cubingtools.de</a>.
+            </p>
+            <p>
+                If you find a bug, make sure to tell us
+                via the <a target="_blank" href="https://GitHub.com/MPGsebkli27/cubingtools/issues">GitHub</a>!
+            </p>
+        </footer>
     </div>
 
     <div id="loadingPopup" style="display: none;">Loading...</div>
 
-    <script src="../../js/guildford.js"></script>t
+    <script src="../../js/loadTools.js"></script>
+    <script src="../../js/guildford.js"></script>
 </body>
 
 </html>

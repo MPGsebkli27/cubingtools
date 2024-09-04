@@ -1,16 +1,16 @@
 {
-  "name": "cubing-tools",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "cubingtools",
+  "version": "0.2.0",
+  "main": "backend/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node backend/server.js"
+    "dev": "node inspect backend/server.js",
+    "start": "node backend/server.js"
   },
-  "author": "Sebastian Kling",
+  "author": "S. Kling",
   "license": "MIT",
   "description": "",
   "dependencies": {
-    "axios": "^1.7.4",
-    "express.js": "^1.0.0"
+    "axios": "^1.7.5",
+    "express": "^4.19.2"
   }
 }

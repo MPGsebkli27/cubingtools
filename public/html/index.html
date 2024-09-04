@@ -4,28 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CubingTools</title>
-    <link rel="icon" type="image/x-icon" href="../assets/favicon.png">
-
-    <link rel="stylesheet" href="../css/globals.css">
-    <link rel="stylesheet" href="../css/home.css">
+    <title>CubingTools.de</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="icon" href="/public/assets/cubingtools.png" type="image/x-icon">
 </head>
 
 <body>
-    <header class="header">
-        <a href="/" class="logo">CubingTools</a>
-        <nav class="navbar">
-            <a href="/">Home</a>
-            <a href="/about">About</a>
-            <a target="_blank" href="https://github.com/MPGsebkli27/cubingtools">Github</a>
+    <div class="container">
+        <nav>
+            <a href="/" class="logo">CubingTools</a>
+            <div class="navbar">
+                <a href="/">Home</a>
+                <a href="mailto: info@cubingtools.de">Contact</a>
+                <a target="_blank" href="https://GitHub.com/MPGsebkli27/cubingtools">GitHub</a>
+            </div>
         </nav>
-    </header>
 
-    <div class="tools-container">
-        <div id="tools-grid"></div>
+        <div id="sidebar">
+            <h2>Tools</h2>
+        </div>
+
+        <main>
+            <div class="heading">
+                <h1>Your One-Stop Destination for All Your Cubing Needs</h1>
+                <p>Welcome to CubingTools, the resource for cubers of all levels, designed to simplify and
+                    enhance your cubing experience. To anyone who might stumble upon this website, CubingTools is here
+                    to make your life easier by streamlining tasks that can otherwise
+                    be tedious and time-consuming.</p>
+                <p>The inspiration for this project came from a challenge I faced while organizing cubing events. The
+                    official groupifier website, which you can explore <a
+                        href="https://groupifier.jonatanklosko.com/">here</a>, is fantastic but only
+                    supports grouping for official World Cube Association (WCA) competitions. This limitation became a
+                    significant obstacle for anyone looking to host larger, unofficial competitions on platforms like <a
+                        href="https://cubingtools.com/">CubingContents.com</a>, where the grouping process had to be
+                    done manually. Recognizing this gap, I decided to create CubingTools to fill the void and provide a
+                    more efficient solution for the community.</p>
+                <p>As CubingTools developed, it quickly grew beyond being just a basic grouping tool. One of the
+                    standout features we've introduced is the Mini Guildford Optimizer. This tool is designed
+                    specifically to help you fine-tune the distribution of events during a Mini Guildford challenge. By
+                    analyzing key factors such as your most recent official Ao12, the optimizer carefully calculates the
+                    optimal global and transition periods. The result is a highly efficient distribution that
+                    ensures a seamless and enjoyable experience for all participants.</p>
+                <p>Over time, CubingTools has grown significantly, expanding its capabilities to meet the diverse needs
+                    of the cubing community. I'm thrilled to share this platform with you and hope it will become an
+                    invaluable resource, making it easier than ever to organize, participate in, and enjoy cubing
+                    events. From managing large-scale unofficial competitions to fine-tuning your Mini Guildford
+                    strategy, CubingTools is here to support every aspect of your cubing journey.</p>
+            </div>
+        </main>
+        <footer>
+            <p>Made by <span class="bold">Sebastian Kling</span></p>
+            <p>
+                If you have any suggestions for a new tool, please feel free to contact us via <a
+                    href="mailto: info@cubingtools.de">info@cubingtools.de</a>.
+            </p>
+            <p>
+                If you find a bug, make sure to tell us
+                via the <a target="_blank" href="https://GitHub.com/MPGsebkli27/cubingtools/issues">GitHub</a>!
+            </p>
+        </footer>
     </div>
 
-    <script src="../js/script.js"></script>
+    <script src="../js/loadTools.js"></script>
 </body>
 
 </html>
