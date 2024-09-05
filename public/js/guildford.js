@@ -222,4 +222,6 @@ function displayResults(result, competitor1, competitor2) {
 
 // Function to show or hide the loading popup
 function showLoadingPopup(show) {
-    const popup = doc
+    const popup = document.getElementById('loadingPopup');
+    popup.style.display = show ? 'flex' : 'none';
+}

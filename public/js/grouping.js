@@ -542,4 +542,19 @@ async function generateGroups() {
             }
 
             const scramblersDiv = document.createElement('div');
-            scramblersDiv.innerHTML = `Scrambler(s): <span>${group.scramblers.map(s => s.name).
+            scramblersDiv.innerHTML = `Scrambler(s): <span>${group.scramblers.map(s => s.name).join(', ')}</span>`;
+            groupDiv.appendChild(scramblersDiv);
+
+            eventDiv.appendChild(groupDiv);
+        });
+
+        groupingOutput.appendChild(eventDiv);
+    }
+    showLoadingPopup(false);
+}
+
+// Function to show or hide the loading popup
+function showLoadingPopup(show) {
+    const popup = document.getElementById('loadingPopup');
+    popup.style.display = show ? 'flex' : 'none';
+}

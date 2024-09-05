@@ -86,4 +86,32 @@ input[type="checkbox"] {
 
 .event-group {
     background-color: var(--input-background);
-    border: 1
+    border: 1px solid var(--input-border);
+    border-radius: var(--main-radius);
+    padding: var(--space-xs);
+    margin: var(--space-md) var(--space-sm);
+}
+
+.event-group h3 {
+    margin-bottom: var(--space-sm);
+    font-size: 1.25rem;
+}
+
+.group {
+    border-radius: var(--main-radius);
+    background-color: var(--hover-background);
+    padding: var(--space-sm);
+    margin-bottom: var(--space-xs)
+}
+
+.group ul li {
+    margin-left: var(--space-lg);
+}
+
+.group div {
+    color: var(--secondary-text);
+}
+
+.group div span {
+    color: var(--main-text);
+}
