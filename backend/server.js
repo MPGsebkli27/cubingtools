@@ -2,8 +2,10 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const app = express();
-const port = 443; // Default https port
+const httpPort = 80; // Default http port
+const httpsPort = 443; // Default https port
 
+const http = require('http');
 const https = require('https');
 
 const privateKey = fs.readFileSync('./backend/credentials/cubingtools_private_key.key');
@@ -39,13 +41,18 @@ function updateLogFile(logEntry) {
 initializerequests();
 
 app.use((req, res, next) => {
-    const logMessage = `Request to ${req.path}`;
-    const now = new Date();
-    const timestamp = now.toISOString();
-    const logEntry = `${timestamp} - ${logMessage}\n`;
+    if (req.secure) {
+        const logMessage = `Request to ${req.path}`;
+        const now = new Date();
+        const timestamp = now.toISOString();
+        const logEntry = `${timestamp} - ${logMessage}\n`;
 
-    updateLogFile(logEntry);
-    next();
+        updateLogFile(logEntry);
+        next();
+    } else {
+        // Redirect to the HTTPS version of the URL
+        res.redirect(`https://${req.headers.host}${req.url}`);
+    }
 });
 
 // Serve static files from the public directory
@@ -62,6 +69,13 @@ app.use(pagesRoutes);
 
 const httpsServer = https.createServer(credentials, app);
 
-httpsServer.listen(port, () => {
-    console.log('Server is running')
+httpsServer.listen(httpsPort, () => {
+    console.log('Listening for https://')
+});
+
+http.createServer((req, res) => {
+    res.writeHead(301, { 'Location': `https://${req.headers.host}${req.url}` });
+    res.end();
+}).listen(httpPort, () => {
+    console.log('HTTP server running on port 80 and redirecting to HTTPS');
 });

@@ -8,6 +8,11 @@ router.get('/', (req, res) => {
 });
 
 // Serve the main page
+router.get('/robot.txt', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', '../public', 'robot.txt'));
+});
+
+// Serve the main page
 router.get('/404', (req, res) => {
     res.sendFile(path.join(__dirname, '..', '../public/html', '404.html'));
 });
