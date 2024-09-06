@@ -431,6 +431,14 @@ async function sortArray(array, eventId) {
     return array;
 }
 
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 async function generateGroups() {
     showLoadingPopup(true);
     const maxCompetitors = competitionData.maxCompetitors;
@@ -464,6 +472,8 @@ async function generateGroups() {
 
         // Assign runners, judges, and scramblers ensuring no overlap
         for (let groupIndex = 0; groupIndex < eventGroups.length; groupIndex++) {
+            const shuffledCompetitors = shuffleArray(competitors);
+
             const group = eventGroups[groupIndex];
 
             // Number of Scramblers and Runners per group
@@ -477,7 +487,7 @@ async function generateGroups() {
 
             // Assign judges if applicable
             if (includeJudges) {
-                const availableJudges = eventCompetitors.filter(competitor =>
+                const availableJudges = shuffledCompetitors.filter(competitor =>
                     !group.competitors.includes(competitor) &&
                     !group.judges.includes(competitor) &&
                     !group.runners.includes(competitor) &&
@@ -488,7 +498,7 @@ async function generateGroups() {
 
             // Assign runners if applicable
             if (includeRunners) {
-                const availableRunners = eventCompetitors.filter(competitor =>
+                const availableRunners = shuffledCompetitors.filter(competitor =>
                     !group.competitors.includes(competitor) &&
                     !group.judges.includes(competitor) &&
                     !group.runners.includes(competitor) &&
