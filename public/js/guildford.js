@@ -48,6 +48,9 @@ async function getCurrentAverage(wcaId, event) {
 async function getWCAData(competitorId) {
     const wcaId = document.getElementById(`${competitorId}-wca`).value.toUpperCase().trim();
 
+    // Test if a WCA ID was given
+    if (!/\d{4}[a-zA-Z]{4}\d{2}/.test(wcaId)) return;
+
     showLoadingPopup(true);
 
     try {
@@ -159,8 +162,6 @@ function optimizeGuildford(competitor1, competitor2) {
 
     const results = combinations.map(combination => {
         const maxTime = calculateMaxTime(combination, competitor1, competitor2, pickupTime);
-        console.log(pickupTime);
-
 
         if (maxTime < bestTime) {
             bestTime = maxTime;

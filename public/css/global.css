@@ -64,7 +64,7 @@ body {
 
 .container {
     display: grid;
-    height: 100vh;
+    height: 100svh;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: 0.3fr 2.9fr 0.6fr;
     grid-template-areas:
@@ -260,7 +260,7 @@ footer {
 @media only screen and (max-width: 650px) {
     .container {
         grid-template-columns: 1fr;
-        grid-template-rows: 0.4fr 1fr 5.4fr 0.8fr;
+        grid-template-rows: 0.4fr 1fr 5.6fr 0.6fr;
         grid-template-areas:
             "nav"
             "sidebar"
