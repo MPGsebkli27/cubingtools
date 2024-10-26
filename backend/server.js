@@ -79,3 +79,33 @@ http.createServer((req, res) => {
 }).listen(httpPort, () => {
     console.log('HTTP server running on port 80 and redirecting to HTTPS');
 });
+
+
+// const nodeMailer = require('nodemailer');
+
+// const html = `
+//     <h1>Hello Human</h1>
+// `;
+
+// async function main() {
+//     const transporter = nodeMailer.createTransport({
+//         host: process.env.EMAIL_HOST,
+//         port: 587,
+//         secure: false,
+//         auth: {
+//             user: 'info@cubingtools.de',
+//             pass: process.env.EMAIL_PASSWORD
+//         }
+//     });
+
+//     const info = await transporter.sendMail({
+//         from: 'Info <info@cubingtools.de>',
+//         to: 'sebastiankling@me.com',
+//         subject: 'Test',
+//         html: html
+//     })
+
+//     console.log(info.messageId);
+// }
+
+// main().catch(e => console.log(e));

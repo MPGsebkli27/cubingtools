@@ -66,7 +66,7 @@ body {
     display: grid;
     height: 100svh;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 0.3fr 2.9fr 0.6fr;
+    grid-template-rows: 0.3fr 2.7fr 0.8fr;
     grid-template-areas:
         "nav nav nav nav"
         "sidebar main main main"
@@ -202,23 +202,30 @@ main p {
 }
 
 main label {
-    font-size: var(--font-size-lg);
-    color: var(--main-text);
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: var(--space-sm);
     margin-bottom: var(--space-sm);
 }
 
 main input[type="text"],
-main input[type="number"] {
-    width: 100%;
+main input[type="number"],
+select {
+    flex-grow: 1;
+    max-width: 100%;
     padding: var(--space-xs);
     border-radius: var(--main-radius);
     border: 1px solid var(--input-border);
     background-color: var(--input-background);
     color: var(--main-text);
-    margin-top: var(--space-xs);
-    margin-left: var(--space-sm);
+    margin-left: var(--space-xs);
+}
+
+main label span {
+    white-space: nowrap;
+    margin-right: var(--space-xs);
 }
 
 
@@ -233,6 +240,23 @@ footer {
     justify-content: center;
     margin: 0;
     color: var(--secondary-text);
+    background-color: #f8f9fa;
+    font-size: clamp(5px, 10px, 15px);
+    line-height: 1.4;
+    overflow-y: scroll;
+}
+
+footer .footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    text-align: left;
+}
+
+footer p {
+    flex: 1;
+    margin: 0 10px;
+    font-size: inherit;
 }
 
 
@@ -260,7 +284,7 @@ footer {
 @media only screen and (max-width: 650px) {
     .container {
         grid-template-columns: 1fr;
-        grid-template-rows: 0.4fr 1fr 5.6fr 0.6fr;
+        grid-template-rows: 0.4fr 0.8fr 5.6fr 0.8fr;
         grid-template-areas:
             "nav"
             "sidebar"
@@ -273,7 +297,6 @@ footer {
         overflow-x: auto;
         grid-area: sidebar;
         padding: 0 var(--main-padding);
-        scroll-snap-type: x mandatory;
     }
 
     #sidebar h2 {
@@ -287,11 +310,12 @@ footer {
     #sidebar .tool-tag {
         display: flex;
         flex: 0 0 auto;
-        scroll-snap-align: start;
+        font-size: 14px;
+        text-align: center;
         justify-content: center;
         align-items: center;
         margin-right: var(--main-margin);
-        width: 33%;
+        width: 30%;
     }
 
     .container>* {
@@ -300,5 +324,34 @@ footer {
 
     .logo {
         display: none;
+    }
+
+    .footer-content {
+        overflow: hidden;
+    }
+
+    .hide-sm {
+        display: none;
+    }
+}
+
+@media (max-width: 50rem) {
+
+    main label {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    main input[type="text"],
+    main input[type="number"],
+    select {
+        width: 100%;
+        flex-basis: 100%;
+        margin-left: 0;
+    }
+
+    main label span {
+        margin-bottom: var(--space-xs);
     }
 }

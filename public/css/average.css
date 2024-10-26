@@ -1,0 +1,119 @@
+.results-grid {
+    display: grid;
+    height: 280px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+        "solves average"
+        "solves saved";
+    padding: var(--main-margin);
+    grid-gap: var(--main-margin);
+    background-color: var(--main-backgorund);
+    border-radius: var(--main-radius);
+    border: 1px solid var(--input-border);
+    margin-top: 10px;
+}
+
+.results-grid h3 {
+    text-align: center;
+    margin: 7px 0;
+}
+
+.times {
+    grid-area: solves;
+    background-color: var(--main-lighter);
+}
+
+.times>ol {
+    display: flex;
+    flex-direction: column;
+}
+
+.times>ol>li {
+    background-color: var(--button-background);
+    border-radius: var(--main-radius);
+    flex: 0 0 auto;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    margin: auto;
+    margin-bottom: 5px;
+    list-style-type: none;
+}
+
+.times>ol>li:hover {
+    color: darkred;
+    text-decoration: line-through;
+}
+
+.results {
+    grid-area: average;
+    background-color: var(--main-lighter);
+}
+
+.saved-averages {
+    grid-area: saved;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: var(--main-lighter);
+}
+
+#timeList li:first-child {
+    background-color: darkgreen;
+}
+
+#timeList li:last-child {
+    background-color: darkred;
+}
+
+.tag {
+    display: inline-block;
+    width: 98%;
+    cursor: pointer;
+    padding: var(--space-xs);
+    margin: 5px;
+    border-radius: var(--main-radius);
+    border: 1px solid var(--input-border);
+    background-color: var(--input-background);
+    color: var(--main-text);
+}
+
+.warning {
+    color: darkred;
+}
+
+.success {
+    color: darkgreen;
+}
+
+#popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--main-text);
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+#popup #popupContent {
+    border-radius: var(--main-radius);
+    color: black;
+    background-color: white;
+    padding: 20px;
+}
+
+#popup #popupContent p {
+    color: black;
+}
+
+#popup #popupContent button {
+    background-color: var(--button-background);
+}

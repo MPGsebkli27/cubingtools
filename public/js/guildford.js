@@ -1,9 +1,80 @@
+// Function to update URL with form data (including event times)
+function updateURLWithFormData() {
+    const params = new URLSearchParams();
+
+    // Get the main form values
+    const pickupTime = document.getElementById('pickup').value;
+    const solvecount = document.getElementById('solvecount').value;
+    const competitor1Id = document.getElementById('c1-wca').value;
+    const competitor2Id = document.getElementById('c2-wca').value;
+
+    // Add main form values to the query parameters
+    if (pickupTime) params.set('pickup', pickupTime);
+    if (solvecount) params.set('solvecount', solvecount);
+    if (competitor1Id) params.set('c1', competitor1Id);
+    if (competitor2Id) params.set('c2', competitor2Id);
+
+    // Add event times for Competitor 1
+    const competitor1Events = ['2x2', '3x3', '4x4', '5x5', 'OH', 'Pyraminx', 'Clock', 'Skewb', 'Megaminx', 'Square-1'];
+    competitor1Events.forEach(event => {
+        const time = document.getElementById(`c1-${event}`).value;
+        if (time) params.set(`c1-${event}`, time);
+    });
+
+    // Add event times for Competitor 2
+    const competitor2Events = ['2x2', '3x3', '4x4', '5x5', 'OH', 'Pyraminx', 'Clock', 'Skewb', 'Megaminx', 'Square-1'];
+    competitor2Events.forEach(event => {
+        const time = document.getElementById(`c2-${event}`).value;
+        if (time) params.set(`c2-${event}`, time);
+    });
+
+    // Update the URL without reloading the page
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, '', newUrl);
+}
+
+// Function to populate form inputs from URL parameters
+function populateFormFromURL() {
+    const params = new URLSearchParams(window.location.search);
+
+    // Populate main form values
+    if (params.has('pickup')) document.getElementById('pickup').value = params.get('pickup');
+    if (params.has('solvecount')) document.getElementById('solvecount').value = params.get('solvecount');
+    if (params.has('c1')) document.getElementById('c1-wca').value = params.get('c1');
+    if (params.has('c2')) document.getElementById('c2-wca').value = params.get('c2');
+
+    // Populate event times for Competitor 1
+    const competitor1Events = ['2x2', '3x3', '4x4', '5x5', 'OH', 'Pyraminx', 'Clock', 'Skewb', 'Megaminx', 'Square-1'];
+    competitor1Events.forEach(event => {
+        if (params.has(`c1-${event}`)) {
+            document.getElementById(`c1-${event}`).value = params.get(`c1-${event}`);
+        }
+    });
+
+    // Populate event times for Competitor 2
+    const competitor2Events = ['2x2', '3x3', '4x4', '5x5', 'OH', 'Pyraminx', 'Clock', 'Skewb', 'Megaminx', 'Square-1'];
+    competitor2Events.forEach(event => {
+        if (params.has(`c2-${event}`)) {
+            document.getElementById(`c2-${event}`).value = params.get(`c2-${event}`);
+        }
+    });
+}
+
+// Call populateFormFromURL on page load to set inputs
+document.addEventListener('DOMContentLoaded', populateFormFromURL);
+
 // Get the pickup time
-var pickupTime = parseFloat(document.getElementById('pickup').value) || 0;
+var pickupTime = parseFloat(document.getElementById('pickup').value) || 1.5;
+
+// Get the solve count to process
+var solvecount = parseInt(document.getElementById('solvecount').value) || 25;
 
 // Attach event listener to the time form submit button
 document.getElementById('timeForm').addEventListener('submit', async function (event) {
     event.preventDefault();
+
+    // Update URL with form data
+    updateURLWithFormData();
 
     const competitor1Id = 'c1';
     const competitor2Id = 'c2';
@@ -29,7 +100,8 @@ document.getElementById('timeForm').addEventListener('submit', async function (e
 
 // Function to fetch average times from the API for a given WCA ID and event
 async function getCurrentAverage(wcaId, event) {
-    const apiUrl = `/api/wca/${wcaId}/${event}`;
+    solvecount = parseInt(document.getElementById('solvecount').value) || 25;
+    const apiUrl = `/api/wca/${wcaId}/${event}?num=${solvecount}`;
 
     try {
         const response = await fetch(apiUrl);

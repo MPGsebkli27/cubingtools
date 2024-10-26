@@ -5,9 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Competition Grouping</title>
+
+    <meta name="description"
+        content="This tool manages cubing competitions, allowing organizers to select events, manage competitors, and assign groups. The JavaScript-based interface enables streamlined event setup, efficient competitor registration, and automated group assignments based on selected parameters." />
+    <meta name="keywords"
+        content="cubing competition, event manager, competitor registration, group assignments, cubing events, competition, WCA, speedcubing, groupifier" />
+    <meta name="author" content="CubingTools" />
+
     <link rel="stylesheet" href="../../css/global.css">
     <link rel="stylesheet" href="../../css/grouping.css">
-    <link rel="icon" href="../../assets/blackCubingTools.png" type="image/x-icon">
+    <link rel="icon" href="../../assets/cubingtools.png" type="image/x-icon">
     <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
 </head>
 
@@ -31,7 +38,7 @@
                 <h1>Unofficial Competition Groupifier</h1>
                 <p>
                     This is the Unofficial Competition Groupifier. To start, input the name of the competition and the
-                    <span class="bold">NPG (Number of competitors per Group)</span>, the maximum ammount of competitors
+                    maximum ammount of competitors
                     that can be in one single group.
                 </p>
                 <p>
@@ -43,13 +50,13 @@
 
                 <div id="competition-setup">
                     <h2>Setup Competition</h2>
-                    <label>Name: <input type="text" id="competition-name"
+                    <label>Competition Name:<input type="text" id="competition-name"
                             placeholder="Super Cool Unofficial Competition">
                     </label>
-                    <label title="Number of Competitors per Group">NPG: <input type="number" id="max-competitors"
-                            placeholder="10"></label>
-                    <label><input type="checkbox" id="do-runners">Runners</label>
-                    <label><input type="checkbox" id="do-judges">Judges</label>
+                    <label title="Number of Competitors per Group">Maximum number of competitors per
+                        group:<input type="number" id="max-competitors" placeholder="10"></label>
+                    <label class="checkbox-label"><input type="checkbox" id="do-runners">Do Runners?</label>
+                    <label class="checkbox-label"><input type="checkbox" id="do-judges">Do Judges?</label>
                     <button onclick="setupCompetition()">Next</button>
                 </div>
 
@@ -108,11 +115,18 @@
             </div>
         </main>
         <footer>
-            <p>Made by <span class="bold">Sebastian Kling</span></p>
-            <p>
-                If you find a bug, make sure to tell us
-                via the <a target="_blank" href="https://GitHub.com/MPGsebkli27/cubingtools/issues">GitHub</a>!
-            </p>
+            <div class="footer-content">
+                <p>Developed by <a href="mailto:sebastian@cubingtools.de">Sebastian Kling</a>, with dedication to the
+                    cubing community.</p>
+                <p class="hide-sm">
+                    Have you encountered a bug? We appreciate your feedback! Please report it on our
+                    <a target="_blank" href="https://github.com/MPGsebkli27/cubingtools/issues">GitHub issues page</a>.
+                </p>
+                <p class="hide-sm">
+                    CubingTools.de is using the <a target="_blank"
+                        href="https://wca-rest-api.robiningelbrecht.be/">Unofficial World Cube Association API</a>.
+                </p>
+            </div>
         </footer>
     </div>
 

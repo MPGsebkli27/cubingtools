@@ -5,9 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Guildford Optimizer</title>
+
+    <meta name="description"
+        content="Tool for optimizing Guildford challenge event combinations between two competitors based on their World Cube Association (WCA) average times. The script updates the URL with form data, fetches and displays WCA data for each competitor, and calculates optimal event divisions to minimize total solve time.">
+    <meta name="keywords"
+        content="Guildford challenge, World Cube Association, WCA, event optimization, competitor times, solve time calculations">
+    <meta name="author" content="CubingTools">
+
     <link rel="stylesheet" href="../../css/global.css">
     <link rel="stylesheet" href="../../css/guildford.css">
-    <link rel="icon" href="../../assets/blackCubingTools.png" type="image/x-icon">
+    <link rel="icon" href="../../assets/cubingtools.png" type="image/x-icon">
     <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
 </head>
 
@@ -35,48 +42,71 @@
                 </p>
                 <p>
                     If you aren't sure what your globals are, you can also input your WCA ID. This will return your
-                    latest Ao12 for each event!
+                    latest Ao25 for each event! If you have more solves that you would like to be taken into account for
+                    your global, modify the
+                    <span class="bold">Solve count to process</span> input field.
                 </p>
                 <p>
                     If you cannot solve a puzzle, or simply do not want to, you can input DNF as your time.
                 </p>
 
-                <label>Pick Up Time: <input type="number" class="time-input pickup" id="pickup" value="1.5"></label>
-                <form id="timeForm">
+                <div class="input-container">
+                    <label><span>Pick Up Time:</span> <input type="number" id="pickup" value="1.5"></label>
+                    <label><span>Solve count to process:</span> <input type="number" id="solvecount" value="25"></label>
+                </div>
 
+                <form id="timeForm">
                     <div class="competitor">
                         <h3>Competitor 1</h3>
-                        <label>WCA: <input type="text" class="time-input" id="c1-wca"></label>
-                        <button type="button" onclick="getWCAData('c1')">Add Globals</button>
+                        <label><span>WCA:</span> <input type="text" id="c1-wca"></label>
+                        <button class="globals-btn" type="button" onclick="getWCAData('c1')">Add Globals</button>
                         <div id="c1-times">
-                            <label>2x2: <input type="text" class="time-input" id="c1-2x2" required></label>
-                            <label>3x3: <input type="text" class="time-input" id="c1-3x3" required></label>
-                            <label>4x4: <input type="text" class="time-input" id="c1-4x4" required></label>
-                            <label>5x5: <input type="text" class="time-input" id="c1-5x5" required></label>
-                            <label>OH: <input type="text" class="time-input" id="c1-OH" required></label>
-                            <label>Pyraminx: <input type="text" class="time-input" id="c1-Pyraminx" required></label>
-                            <label>Clock: <input type="text" class="time-input" id="c1-Clock" required></label>
-                            <label>Skewb: <input type="text" class="time-input" id="c1-Skewb" required></label>
-                            <label>Megaminx: <input type="text" class="time-input" id="c1-Megaminx" required></label>
-                            <label>Squan: <input type="text" class="time-input" id="c1-Square-1" required></label>
+                            <label><span>2x2:</span> <input inputmode="numeric" type="text" id="c1-2x2"
+                                    required></label>
+                            <label><span>3x3:</span> <input inputmode="numeric" type="text" id="c1-3x3"
+                                    required></label>
+                            <label><span>4x4:</span> <input inputmode="numeric" type="text" id="c1-4x4"
+                                    required></label>
+                            <label><span>5x5:</span> <input inputmode="numeric" type="text" id="c1-5x5"
+                                    required></label>
+                            <label><span>OH:</span> <input inputmode="numeric" type="text" id="c1-OH" required></label>
+                            <label><span>Pyraminx:</span> <input inputmode="numeric" type="text" id="c1-Pyraminx"
+                                    required></label>
+                            <label><span>Clock:</span> <input inputmode="numeric" type="text" id="c1-Clock"
+                                    required></label>
+                            <label><span>Skewb:</span> <input inputmode="numeric" type="text" id="c1-Skewb"
+                                    required></label>
+                            <label><span>Megaminx:</span> <input inputmode="numeric" type="text" id="c1-Megaminx"
+                                    required></label>
+                            <label><span>Square-1:</span> <input inputmode="numeric" type="text" id="c1-Square-1"
+                                    required></label>
                         </div>
                     </div>
 
                     <div class="competitor">
                         <h3>Competitor 2</h3>
-                        <label>WCA: <input type="text" class="time-input" id="c2-wca"></label>
-                        <button type="button" onclick="getWCAData('c2')">Add Globals</button>
+                        <label><span>WCA:</span> <input type="text" id="c2-wca"></label>
+                        <button class="globals-btn" type="button" onclick="getWCAData('c2')">Add Globals</button>
                         <div id="c2-times">
-                            <label>2x2: <input type="text" class="time-input" id="c2-2x2" required></label>
-                            <label>3x3: <input type="text" class="time-input" id="c2-3x3" required></label>
-                            <label>4x4: <input type="text" class="time-input" id="c2-4x4" required></label>
-                            <label>5x5: <input type="text" class="time-input" id="c2-5x5" required></label>
-                            <label>OH: <input type="text" class="time-input" id="c2-OH" required></label>
-                            <label>Pyraminx: <input type="text" class="time-input" id="c2-Pyraminx" required></label>
-                            <label>Clock: <input type="text" class="time-input" id="c2-Clock" required></label>
-                            <label>Skewb: <input type="text" class="time-input" id="c2-Skewb" required></label>
-                            <label>Megaminx: <input type="text" class="time-input" id="c2-Megaminx" required></label>
-                            <label>Squan: <input type="text" class="time-input" id="c2-Square-1" required></label>
+                            <label><span>2x2:</span> <input inputmode="numeric" type="text" id="c2-2x2"
+                                    required></label>
+                            <label><span>3x3:</span> <input inputmode="numeric" type="text" id="c2-3x3"
+                                    required></label>
+                            <label><span>4x4:</span> <input inputmode="numeric" type="text" id="c2-4x4"
+                                    required></label>
+                            <label><span>5x5:</span> <input inputmode="numeric" type="text" id="c2-5x5"
+                                    required></label>
+                            <label><span>OH:</span> <input inputmode="numeric" type="text" id="c2-OH" required></label>
+                            <label><span>Pyraminx:</span> <input inputmode="numeric" type="text" id="c2-Pyraminx"
+                                    required></label>
+                            <label><span>Clock:</span> <input inputmode="numeric" type="text" id="c2-Clock"
+                                    required></label>
+                            <label><span>Skewb:</span> <input inputmode="numeric" type="text" id="c2-Skewb"
+                                    required></label>
+                            <label><span>Megaminx:</span> <input inputmode="numeric" type="text" id="c2-Megaminx"
+                                    required></label>
+                            <label><span>Square-1:</span> <input inputmode="numeric" type="text" id="c2-Square-1"
+                                    required></label>
                         </div>
                     </div>
 
@@ -91,11 +121,18 @@
             </div>
         </main>
         <footer>
-            <p>Made by <span class="bold">Sebastian Kling</span></p>
-            <p>
-                If you find a bug, make sure to tell us
-                via the <a target="_blank" href="https://GitHub.com/MPGsebkli27/cubingtools/issues">GitHub</a>!
-            </p>
+            <div class="footer-content">
+                <p>Developed by <a href="mailto:sebastian@cubingtools.de">Sebastian Kling</a>, with dedication to the
+                    cubing community.</p>
+                <p class="hide-sm">
+                    Have you encountered a bug? We appreciate your feedback! Please report it on our
+                    <a target="_blank" href="https://github.com/MPGsebkli27/cubingtools/issues">GitHub issues page</a>.
+                </p>
+                <p class="hide-sm">
+                    CubingTools.de is using the <a target="_blank"
+                        href="https://wca-rest-api.robiningelbrecht.be/">Unofficial World Cube Association API</a>.
+                </p>
+            </div>
         </footer>
     </div>
 

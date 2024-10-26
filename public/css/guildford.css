@@ -8,6 +8,10 @@ button {
     width: 100%;
 }
 
+.globals-btn {
+    margin-bottom: var(--space-md);
+}
+
 .result {
     margin-top: var(--space-lg);
 }

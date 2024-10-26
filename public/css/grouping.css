@@ -14,8 +14,12 @@
 
 /* Labels and inputs */
 
+.checkbox-label {
+    display: inline-block;
+}
+
 input[type="checkbox"] {
-    margin-right: var(--space-sm);
+    margin-right: 5px;
 }
 
 

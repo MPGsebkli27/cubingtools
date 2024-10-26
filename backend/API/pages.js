@@ -22,6 +22,16 @@ router.get('/apple-touch-icon.png', (req, res) => {
     res.sendFile(path.join(__dirname, '..', '../public/assets', 'apple-touch-icon.png'));
 });
 
+// Serve the sitemap
+router.get('/sitemap.xml', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', '../public', 'sitemap.xml'));
+});
+
+// Serve the google.html
+router.get('/googlea20166777fc211f6.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', '../public/html', 'google.html'));
+});
+
 // Serve specific tool pages
 router.get('/tools/:toolName', (req, res) => {
     const toolName = req.params.toolName;

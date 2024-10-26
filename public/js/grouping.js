@@ -182,6 +182,7 @@ function setupCompetition() {
 
             // Create the label and append the checkbox inside it
             const label = document.createElement('label');
+            label.classList += 'checkbox-label';
             label.appendChild(checkbox);          // Append the checkbox to the label
             label.appendChild(document.createTextNode(event.name)); // Add the event name as the label's text
 
@@ -212,6 +213,7 @@ function addCustomEvent() {
 
     // Create the label and append the checkbox inside it
     const label = document.createElement('label');
+    label.classList += 'checkbox-label'
     label.appendChild(checkbox);          // Append the checkbox to the label
     label.appendChild(document.createTextNode(newEventName)); // Add the event name as the label's text
 
